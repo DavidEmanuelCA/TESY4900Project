@@ -1,5 +1,6 @@
-[gd_scene load_steps=18 format=3 uid="uid://lw1fq3w5gjv"]
+[gd_scene load_steps=19 format=3 uid="uid://lw1fq3w5gjv"]
 
+[ext_resource type="Script" uid="uid://drc1xlhrp3u2n" path="res://player/player.gd" id="1_g1dw6"]
 [ext_resource type="Texture2D" uid="uid://cu2sc8sgeupwt" path="res://player/IDLE.png" id="1_rkbax"]
 [ext_resource type="Texture2D" uid="uid://c8qy5h2xtv0rl" path="res://player/RUN.png" id="2_g1dw6"]
 
@@ -117,6 +118,7 @@ height = 36.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
+script = ExtResource("1_g1dw6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -18)

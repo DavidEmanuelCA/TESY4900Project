@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="TESY4900Project"
+run/main_scene="uid://d2lft6leq5ssr"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
