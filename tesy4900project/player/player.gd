@@ -4,8 +4,8 @@ extends CharacterBody2D
 
 const GRAVITY = 1000
 const SPEED = 300
-const  JUMP_HEIGHT = -300
-const JUMP_HORIZONTAL = 100
+const  JUMP_HEIGHT = -350
+const JUMP_HORIZONTAL = 125
 
 enum STATE { IDLE, RUN, JUMP }
 
@@ -33,7 +33,6 @@ func player_falling(delta):
 func player_idle(delta):
 	if is_on_floor():
 		current_state = STATE.IDLE
-		#print("State: ", STATE.keys()[current_state])
 
 func player_run(delta):
 	if !is_on_floor():
@@ -43,20 +42,15 @@ func player_run(delta):
 	
 	if direction:
 		velocity.x = direction * SPEED
-		#animated_sprite_2d.flip_h = direction < 0
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 	
-	#if is_on_floor() and direction:
-		#current_state == STATE.RUN
-	
 	if direction != 0:
 		current_state = STATE.RUN
-		#print("State: ", STATE.keys()[current_state])
 		animated_sprite_2d.flip_h = false if direction > 0 else true
 
 func player_jump(delta):
-	if Input.is_action_just_pressed("jump"):
+	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_HEIGHT
 		current_state = STATE.JUMP
 		
