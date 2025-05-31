@@ -4,8 +4,8 @@ extends CharacterBody2D
 
 const GRAVITY = 1000
 const SPEED = 300
-const  JUMP_HEIGHT = -350
-const JUMP_HORIZONTAL = 125
+const  JUMP_HEIGHT = -325
+const JUMP_HORIZONTAL = 500
 const JUMP_MAX_HORIZONTAL_SPEED = 300
 
 enum STATE { IDLE, RUN, JUMP }
@@ -57,8 +57,8 @@ func player_jump(delta):
 		
 	if !is_on_floor() and current_state == STATE.JUMP:
 		var direction = input_movement()
-		velocity += direction * JUMP_MAX_HORIZONTAL_SPEED * delta
 		velocity.x += direction * JUMP_HORIZONTAL * delta
+		velocity.x = clamp(velocity.x, -JUMP_MAX_HORIZONTAL_SPEED, JUMP_MAX_HORIZONTAL_SPEED)
 
 func input_movement():
 	var direction: float = Input.get_axis("move_left", "move_right")
