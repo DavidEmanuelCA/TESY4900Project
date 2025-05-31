@@ -6,6 +6,7 @@ const GRAVITY = 1000
 const SPEED = 300
 const  JUMP_HEIGHT = -350
 const JUMP_HORIZONTAL = 125
+const JUMP_MAX_HORIZONTAL_SPEED = 300
 
 enum STATE { IDLE, RUN, JUMP }
 
@@ -55,8 +56,14 @@ func player_jump(delta):
 		current_state = STATE.JUMP
 		
 	if !is_on_floor() and current_state == STATE.JUMP:
-		var direction = Input.get_axis("move_left", "move_right")
+		var direction = input_movement()
+		velocity += direction * JUMP_MAX_HORIZONTAL_SPEED * delta
 		velocity.x += direction * JUMP_HORIZONTAL * delta
+
+func input_movement():
+	var direction: float = Input.get_axis("move_left", "move_right")
+	
+	return direction
 
 func player_animations():
 	if current_state == STATE.IDLE:
