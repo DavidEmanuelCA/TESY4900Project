@@ -3,19 +3,25 @@ extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 const GRAVITY = 1000
-const SPEED = 300
-const  JUMP_HEIGHT = -325
-const JUMP_HORIZONTAL = 500
-const JUMP_MAX_HORIZONTAL_SPEED = 300
+@export var SPEED : int = 300
+@export var JUMP_HEIGHT : int = -325
+@export var JUMP_HORIZONTAL : int = 500
+@export var JUMP_MAX_HORIZONTAL_SPEED : int = 300
+#const SPEED = 300
+#const  JUMP_HEIGHT = -325
+#const JUMP_HORIZONTAL = 500
+#const JUMP_MAX_HORIZONTAL_SPEED = 300
+
+
 
 enum STATE { IDLE, RUN, JUMP }
 
-var current_state
+var current_state : STATE
 
 func _ready():
 	current_state = STATE.IDLE
 
-func _physics_process(delta):
+func _physics_process(delta : float):
 	player_falling(delta)
 	player_idle(delta)
 	player_run(delta)
@@ -27,19 +33,19 @@ func _physics_process(delta):
 	
 	print("State: ", STATE.keys()[current_state])
 
-func player_falling(delta):
+func player_falling(delta : float):
 	if !is_on_floor():
 		velocity.y += GRAVITY * delta
 
-func player_idle(delta):
+func player_idle(delta : float):
 	if is_on_floor():
 		current_state = STATE.IDLE
 
-func player_run(delta):
+func player_run(delta : float):
 	if !is_on_floor():
 		return
 	
-	var direction = Input.get_axis("move_left", "move_right")
+	var direction = input_movement()
 	
 	if direction:
 		velocity.x = direction * SPEED
@@ -50,7 +56,7 @@ func player_run(delta):
 		current_state = STATE.RUN
 		animated_sprite_2d.flip_h = false if direction > 0 else true
 
-func player_jump(delta):
+func player_jump(delta : float):
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_HEIGHT
 		current_state = STATE.JUMP
