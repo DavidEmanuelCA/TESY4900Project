@@ -8,9 +8,8 @@ extends CharacterBody2D
 @onready var timer: Timer = $Timer
 
 const GRAVITY = 1000
-#const SPEED = 1500
 
-enum STATE { IDLE, RUNNING, JUMPING }
+enum STATE { IDLE, RUN, JUMP }
 var CURRENT_STATE : STATE
 var direction : Vector2 = Vector2.LEFT
 var NUM_OF_POINTS : int
@@ -53,31 +52,31 @@ func enemy_run(delta : float):
 	if !CAN_RUN:
 		return
 	
-	if abs(position.x -CURRENT_POINT.x) > 0.5:
+	if abs(position.x - CURRENT_POINT.x) > 0.5:
 		velocity.x = direction.x * SPEED * delta
-		CURRENT_STATE = STATE.RUNNING
+		CURRENT_STATE = STATE.RUN
 	else:
 		CURRENT_POINT_POSITION += 1
 		
-	if CURRENT_POINT_POSITION >= NUM_OF_POINTS:
-		CURRENT_POINT_POSITION = 0
-	
-	CURRENT_POINT = POINT_POSITIONS[CURRENT_POINT_POSITION]
-	
-	if CURRENT_POINT.x > position.x:
-		direction = Vector2.RIGHT
-	else:
-		direction = Vector2.LEFT
-	
-	CAN_RUN = false
-	timer.start()
+		if CURRENT_POINT_POSITION >= NUM_OF_POINTS:
+			CURRENT_POINT_POSITION = 0
+		
+		CURRENT_POINT = POINT_POSITIONS[CURRENT_POINT_POSITION]
+		
+		if CURRENT_POINT.x > position.x:
+			direction = Vector2.RIGHT
+		else:
+			direction = Vector2.LEFT
+		
+		CAN_RUN = false
+		timer.start()
 	
 	animated_sprite_2d.flip_h = direction.x < 1
 
 func enemy_animations():
 	if CURRENT_STATE == STATE.IDLE && !CAN_RUN:
 		animated_sprite_2d.play("idle")
-	elif CURRENT_STATE == STATE.RUNNING && CAN_RUN:
+	elif CURRENT_STATE == STATE.RUN && CAN_RUN:
 		animated_sprite_2d.play("run")
 
 func _on_timer_timeout() -> void:
