@@ -19,3 +19,17 @@ position = Vector2(-94, 81)
 
 [node name="Point2" type="Marker2D" parent="EnemyWanderer/PatrolPoints" index="1"]
 position = Vector2(197, 81)
+
+[node name="EnemyWanderer2" parent="." index="3" node_paths=PackedStringArray("PATROL_POINTS") instance=ExtResource("2_rwr5k")]
+position = Vector2(967, -143)
+PATROL_POINTS = NodePath("PatrolPoints")
+SPEED = 3000
+WAIT_TIME = 2
+
+[node name="PatrolPoints" type="Node2D" parent="EnemyWanderer2" index="3"]
+
+[node name="Point1" type="Marker2D" parent="EnemyWanderer2/PatrolPoints" index="0"]
+position = Vector2(-94, 81)
+
+[node name="Point2" type="Marker2D" parent="EnemyWanderer2/PatrolPoints" index="1"]
+position = Vector2(197, 81)

@@ -1,12 +1,14 @@
 extends CharacterBody2D
 
 @export var PATROL_POINTS : Node
+@export var SPEED : int = 1500
+@export var WAIT_TIME : int = 3
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var timer: Timer = $Timer
 
 const GRAVITY = 1000
-const SPEED = 1500
+#const SPEED = 1500
 
 enum STATE { IDLE, RUNNING, JUMPING }
 var CURRENT_STATE : STATE
@@ -25,6 +27,8 @@ func _ready():
 		CURRENT_POINT = POINT_POSITIONS[CURRENT_POINT_POSITION]
 	else:
 		print("no patrol points")
+	
+	timer.wait_time = WAIT_TIME
 	
 	CURRENT_STATE = STATE.IDLE
 
