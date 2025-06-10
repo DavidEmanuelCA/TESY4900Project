@@ -1,6 +1,7 @@
-[gd_scene load_steps=27 format=3 uid="uid://qifnl3xwm5dw"]
+[gd_scene load_steps=28 format=3 uid="uid://qifnl3xwm5dw"]
 
 [ext_resource type="Texture2D" uid="uid://djyrwfe5p1f8b" path="res://enemies/IDLE.png" id="1_6gbwl"]
+[ext_resource type="Script" uid="uid://h2im7krmgytg" path="res://enemies/enemy_wanderer.gd" id="1_kykxe"]
 [ext_resource type="Texture2D" uid="uid://bwtv3pqfpv8h2" path="res://enemies/RUN.png" id="2_kykxe"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hgf8i"]
@@ -180,6 +181,7 @@ radius = 9.0
 height = 36.0
 
 [node name="EnemyWanderer" type="CharacterBody2D"]
+script = ExtResource("1_kykxe")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -33)
