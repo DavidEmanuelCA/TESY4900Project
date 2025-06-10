@@ -1,32 +1,33 @@
 #!/bin/bash
 
-# Start ssh-agent if not already running
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    eval "$(ssh-agent -s)"
-fi
+# Start ssh-agent and export its variables to a temp file
+eval "$(ssh-agent -s)" >/dev/null
 
-# List private keys in ~/.ssh
+# Export agent environment
+export SSH_AUTH_SOCK
+export SSH_AGENT_PID
+
+# List available keys
 echo "Available SSH keys:"
-keys=($(find ~/.ssh -maxdepth 1 -type f -name "id_*" ! -name "*.pub"))
-for i in "${!keys[@]}"; do
-    echo "$((i+1))) ${keys[$i]}"
+key_paths=($(find ~/.ssh -maxdepth 1 -type f -name "id_*" ! -name "*.pub"))
+for i in "${!key_paths[@]}"; do
+  echo "$((i+1))) ${key_paths[$i]}"
 done
 
-# Ask the user to choose a key
+# User chooses one
 read -p "Choose the SSH key to use (number): " choice
+chosen_key=${key_paths[$((choice-1))]}
 
-# Check if the selection is valid
-if [[ "$choice" -ge 1 && "$choice" -le ${#keys[@]} ]]; then
-    selected_key="${keys[$((choice-1))]}"
-    ssh-add "$selected_key"
-    echo "✅ Added key: $selected_key"
+# Add key
+if ssh-add "$chosen_key"; then
+  echo "✅ Added key: $chosen_key"
+  echo "✔ Ready to use Git with SSH!"
 else
-    echo "❌ Invalid selection."
-    exit 1
+  echo "❌ Failed to add SSH key."
+  exit 1
 fi
 
-# Optional: Launch Godot (comment out if not desired)
-# godot4 .
-
-echo "✔ SSH agent ready and project environment initialized."
+# Optional: run a new shell with agent environment to allow using Git
+echo "💡 Opening a subshell with SSH agent active. Type 'exit' when done."
+$SHELL
 
