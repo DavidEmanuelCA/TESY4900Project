@@ -186,10 +186,16 @@ script = ExtResource("1_kykxe")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -33)
 sprite_frames = SubResource("SpriteFrames_7p7c5")
-animation = &"run"
-autoplay = "run"
+animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_6gbwl")
 debug_color = Color(0.528416, 0.564877, 0.254377, 0.42)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

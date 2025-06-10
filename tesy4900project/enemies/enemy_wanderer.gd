@@ -1,7 +1,9 @@
 extends CharacterBody2D
 
 @export var PATROL_POINTS : Node
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var timer: Timer = $Timer
 
 const GRAVITY = 1000
 const SPEED = 1500
@@ -13,6 +15,7 @@ var NUM_OF_POINTS : int
 var POINT_POSITIONS : Array[Vector2]
 var CURRENT_POINT : Vector2
 var CURRENT_POINT_POSITION : int
+var CAN_RUN : bool
 
 func _ready():
 	if PATROL_POINTS != null :
@@ -31,15 +34,21 @@ func _physics_process(delta: float) -> void:
 	enemy_run(delta)
 	
 	move_and_slide()
+	
+	enemy_animations()
 
 func enemy_gravity(delta : float):
 	velocity.y += GRAVITY * delta
 
 func enemy_idle(delta : float):
-	velocity.x = move_toward(velocity.x, 0, SPEED * delta)
-	CURRENT_STATE = STATE.IDLE
+	if !CAN_RUN:
+		velocity.x = move_toward(velocity.x, 0, SPEED * delta)
+		CURRENT_STATE = STATE.IDLE
 
 func enemy_run(delta : float):
+	if !CAN_RUN:
+		return
+	
 	if abs(position.x -CURRENT_POINT.x) > 0.5:
 		velocity.x = direction.x * SPEED * delta
 		CURRENT_STATE = STATE.RUNNING
@@ -56,4 +65,16 @@ func enemy_run(delta : float):
 	else:
 		direction = Vector2.LEFT
 	
+	CAN_RUN = false
+	timer.start()
+	
 	animated_sprite_2d.flip_h = direction.x < 1
+
+func enemy_animations():
+	if CURRENT_STATE == STATE.IDLE && !CAN_RUN:
+		animated_sprite_2d.play("idle")
+	elif CURRENT_STATE == STATE.RUNNING && CAN_RUN:
+		animated_sprite_2d.play("run")
+
+func _on_timer_timeout() -> void:
+	CAN_RUN = true
