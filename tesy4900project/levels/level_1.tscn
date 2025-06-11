@@ -6,3 +6,5 @@
 [node name="Level1" instance=ExtResource("1_vn7o3")]
 
 [node name="ParallaxBackground" parent="." index="0" instance=ExtResource("2_jirdo")]
+offset = Vector2(0, -270)
+transform = Transform2D(1, 0, 0, 1, 0, -270)
