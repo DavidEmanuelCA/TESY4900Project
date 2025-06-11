@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvovge00gmaoj"]
+
+[ext_resource type="PackedScene" uid="uid://d2lft6leq5ssr" path="res://levels/base_level.tscn" id="1_vn7o3"]
+[ext_resource type="PackedScene" uid="uid://gk6mt5femrdu" path="res://background/parallax_background.tscn" id="2_jirdo"]
+
+[node name="Level1" instance=ExtResource("1_vn7o3")]
+
+[node name="ParallaxBackground" parent="." index="0" instance=ExtResource("2_jirdo")]
