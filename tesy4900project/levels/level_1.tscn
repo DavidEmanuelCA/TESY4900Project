@@ -552,6 +552,13 @@ sources/1 = SubResource("TileSetAtlasSource_5ot28")
 offset = Vector2(0, -270)
 transform = Transform2D(1, 0, 0, 1, 0, -270)
 
+[node name="Camera2D" parent="Player" index="2"]
+limit_left = 5
+limit_top = -269
+limit_right = 5170
+limit_bottom = -5
+editor_draw_limits = true
+
 [node name="Background" type="TileMap" parent="." index="2"]
 position = Vector2(0, 3)
 tile_set = SubResource("TileSet_jirdo")
