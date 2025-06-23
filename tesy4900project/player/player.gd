@@ -17,8 +17,13 @@ enum STATE { IDLE, RUN, JUMP, THROW }
 
 var current_state : STATE
 var hand_position
+#ChatGPT CODE BELOW:
+var can_throw = true
 
 func _ready():
+	#ChatGPT CODE BELOW:
+	animated_sprite_2d.connect("animation_finished", Callable(self, "_on_animated_sprite_2d_animation_finished()"))
+	
 	current_state = STATE.IDLE
 	hand_position = hand.position
 
@@ -74,12 +79,18 @@ func player_jump(delta : float):
 func player_throw(delta : float):
 	var direction = input_movement()
 	
-	if direction != 0 and Input.is_action_just_pressed("throw"):
-		var shuriken_instance = shuriken.instantiate() as Node2D
-		shuriken_instance.direction = direction
-		shuriken_instance.global_position = hand.global_position
-		get_parent().add_child(shuriken_instance)
+	#ChatGPT CODE BELOW:
+	if current_state == STATE.IDLE and can_throw and Input.is_action_just_pressed("throw"):
+		spawn_shuriken()
+		can_throw = false
 		current_state = STATE.THROW
+	
+	#if direction != 0 and Input.is_action_just_pressed("throw"):
+		#var shuriken_instance = shuriken.instantiate() as Node2D
+		#shuriken_instance.direction = direction
+		#shuriken_instance.global_position = hand.global_position
+		#get_parent().add_child(shuriken_instance)
+		#current_state = STATE.THROW
 
 func input_movement():
 	var direction: float = Input.get_axis("move_left", "move_right")
@@ -103,3 +114,17 @@ func player_animations():
 		animated_sprite_2d.play("jump")
 	elif current_state == STATE.THROW:
 		animated_sprite_2d.play("throw")
+
+#ChatGPT CODE BELOW:
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if animated_sprite_2d.animation == "throw":
+		current_state = STATE.IDLE
+		can_throw = true
+
+#ChatGPT CODE BELOW:
+func spawn_shuriken():
+	var direction = input_movement()
+	var shuriken_instance = shuriken.instantiate() as Node2D
+	shuriken_instance.direction = direction
+	shuriken_instance.global_position = hand.global_position
+	get_parent().add_child(shuriken_instance)
