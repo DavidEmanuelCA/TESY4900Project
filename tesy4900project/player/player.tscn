@@ -190,9 +190,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7pqkx")
 }],
-"loop": true,
+"loop": false,
 "name": &"throw",
-"speed": 7.0
+"speed": 10.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e7oew"]
@@ -207,9 +207,12 @@ position = Vector2(0, -18)
 sprite_frames = SubResource("SpriteFrames_tqiix")
 animation = &"throw"
 autoplay = "idle"
-frame = 4
-frame_progress = 0.686339
+frame = 5
+frame_progress = 0.0610113
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_e7oew")
+
+[node name="Hand" type="Marker2D" parent="."]
+position = Vector2(24, -15)

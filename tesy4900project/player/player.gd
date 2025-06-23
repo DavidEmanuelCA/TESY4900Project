@@ -1,6 +1,9 @@
 extends CharacterBody2D
 
+var shuriken = preload("res://shuriken.tscn")
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var hand: Marker2D = $Hand
 
 const GRAVITY = 1000
 @export var SPEED : int = 1000
@@ -10,18 +13,23 @@ const GRAVITY = 1000
 @export var JUMP_HORIZONTAL_SPEED : int = 1000
 @export var JUMP_MAX_HORIZONTAL_SPEED : int = 300
 
-enum STATE { IDLE, RUN, JUMP }
+enum STATE { IDLE, RUN, JUMP, THROW }
 
 var current_state : STATE
+var hand_position
 
 func _ready():
 	current_state = STATE.IDLE
+	hand_position = hand.position
 
 func _physics_process(delta : float):
 	player_falling(delta)
 	player_idle(delta)
 	player_run(delta)
 	player_jump(delta)
+	
+	player_hand_position()
+	player_throw(delta)
 	
 	move_and_slide()
 	
@@ -63,15 +71,35 @@ func player_jump(delta : float):
 		velocity.x += direction * JUMP_HORIZONTAL_SPEED * delta
 		velocity.x = clamp(velocity.x, -JUMP_MAX_HORIZONTAL_SPEED, JUMP_MAX_HORIZONTAL_SPEED)
 
+func player_throw(delta : float):
+	var direction = input_movement()
+	
+	if direction != 0 and Input.is_action_just_pressed("throw"):
+		var shuriken_instance = shuriken.instantiate() as Node2D
+		shuriken_instance.direction = direction
+		shuriken_instance.global_position = hand.global_position
+		get_parent().add_child(shuriken_instance)
+		current_state = STATE.THROW
+
 func input_movement():
 	var direction: float = Input.get_axis("move_left", "move_right")
 	
 	return direction
 
+func player_hand_position():
+	var direction = input_movement()
+	
+	if direction > 0:
+		hand.position.x = hand_position.x
+	elif direction < 0:
+		hand.position.x = -hand_position.x
+
 func player_animations():
 	if current_state == STATE.IDLE:
 		animated_sprite_2d.play("idle")
-	elif current_state == STATE.RUN:
+	elif current_state == STATE.RUN and animated_sprite_2d.animation != "throw":
 		animated_sprite_2d.play("run")
 	elif current_state == STATE.JUMP:
 		animated_sprite_2d.play("jump")
+	elif current_state == STATE.THROW:
+		animated_sprite_2d.play("throw")
