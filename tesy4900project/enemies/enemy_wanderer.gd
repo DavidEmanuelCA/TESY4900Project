@@ -1,8 +1,11 @@
 extends CharacterBody2D
 
+var wanderer_death_effect = preload("res://enemies/wanderer_death_effect.tscn")
+
 @export var PATROL_POINTS : Node
 @export var SPEED : int = 1500
 @export var WAIT_TIME : int = 3
+@export var health_amount : int = 3
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var timer: Timer = $Timer
@@ -17,6 +20,7 @@ var POINT_POSITIONS : Array[Vector2]
 var CURRENT_POINT : Vector2
 var CURRENT_POINT_POSITION : int
 var CAN_RUN : bool
+
 
 func _ready():
 	if PATROL_POINTS != null :
@@ -84,3 +88,13 @@ func _on_timer_timeout() -> void:
 
 func _on_hurtbod_area_entered(area: Area2D) -> void:
 	print("Hurtbox area entered")
+	if area.get_parent().has_method("get_damage_amount"):
+		var node = area.get_parent() as Node
+		health_amount -= node.damage_amount
+		print("Health amount: ", health_amount)
+		
+		if health_amount <= 0:
+			var wanderer_death_effect_instance = wanderer_death_effect.instantiate() as Node2D
+			wanderer_death_effect_instance.global_position = global_position
+			get_parent().add_child(wanderer_death_effect_instance)
+			queue_free()
