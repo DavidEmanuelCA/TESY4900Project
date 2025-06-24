@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bvovge00gmaoj"]
+[gd_scene load_steps=17 format=3 uid="uid://bvovge00gmaoj"]
 
 [ext_resource type="PackedScene" uid="uid://d2lft6leq5ssr" path="res://levels/base_level.tscn" id="1_vn7o3"]
 [ext_resource type="PackedScene" uid="uid://gk6mt5femrdu" path="res://background/parallax_background.tscn" id="2_jirdo"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://csmkuwu567bum" path="res://tileset/Objects.png" id="4_btoec"]
 [ext_resource type="Texture2D" uid="uid://cq1k4o3c7fqr3" path="res://tileset/Props.png" id="5_gwceb"]
 [ext_resource type="Texture2D" uid="uid://cgi3l4m6vty4p" path="res://tileset/tileset_1.png" id="6_btoec"]
+[ext_resource type="PackedScene" uid="uid://qifnl3xwm5dw" path="res://enemies/enemy_wanderer.tscn" id="7_gwceb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l53as"]
 texture = ExtResource("3_n46q3")
@@ -580,3 +581,18 @@ tile_set = SubResource("TileSet_btoec")
 format = 2
 layer_0/name = "Foreground"
 layer_0/tile_data = PackedInt32Array(-524174, 327681, 1, -458638, 327681, 2, -393102, 327681, 3, -524173, 393217, 1, -458637, 393217, 2, -393101, 393217, 3, -327565, 393217, 4, -262029, 393217, 5, -524172, 458753, 1, -458636, 458753, 2, -393100, 458753, 3, -262028, 458753, 5, -262140, 0, 1, -262139, 65536, 1, -262138, 131072, 1, -262137, 196608, 1, -262134, 0, 1, -262133, 65536, 1, -262132, 131072, 1, -262131, 196608, 1, -262091, 0, 1, -262090, 65536, 1, -262089, 131072, 1, -262088, 196608, 1, -262085, 0, 1, -262084, 65536, 1, -262083, 131072, 1, -262082, 196608, 1, -262060, 0, 1, -262059, 65536, 1, -262058, 131072, 1, -262057, 196608, 1, -262066, 0, 1, -262065, 65536, 1, -262064, 131072, 1, -262063, 196608, 1, -327680, 393216, 0, -262144, 393216, 1, -327679, 458752, 0, -262143, 458752, 1, -327678, 524288, 0, -262142, 524288, 1, -327677, 589824, 0, -262141, 589824, 1)
+
+[node name="Enemies" type="Node2D" parent="." index="5"]
+
+[node name="EnemyWanderer" parent="Enemies" index="0" node_paths=PackedStringArray("PATROL_POINTS") instance=ExtResource("7_gwceb")]
+position = Vector2(904, -80)
+PATROL_POINTS = NodePath("PatrolPoints")
+
+[node name="PatrolPoints" type="Node2D" parent="Enemies/EnemyWanderer" index="3"]
+position = Vector2(0, -50)
+
+[node name="Point1" type="Marker2D" parent="Enemies/EnemyWanderer/PatrolPoints" index="0"]
+position = Vector2(-94, 81)
+
+[node name="Point2" type="Marker2D" parent="Enemies/EnemyWanderer/PatrolPoints" index="1"]
+position = Vector2(197, 81)

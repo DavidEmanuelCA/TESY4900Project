@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cguctuwilq1jy"]
+[gd_scene load_steps=6 format=3 uid="uid://cguctuwilq1jy"]
 
 [ext_resource type="Texture2D" uid="uid://3e7eqcded61n" path="res://player/shuriken.png" id="1_foqx7"]
 [ext_resource type="Script" uid="uid://f6moakcph1m8" path="res://shuriken.gd" id="2_tu8ef"]
@@ -23,6 +23,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_tu8ef"]
+radius = 3.0
+
 [node name="Shuriken" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_56gbp")
 animation = &"shuriken"
@@ -33,4 +36,13 @@ wait_time = 5.0
 one_shot = true
 autostart = true
 
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_tu8ef")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

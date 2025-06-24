@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://qifnl3xwm5dw"]
+[gd_scene load_steps=29 format=3 uid="uid://qifnl3xwm5dw"]
 
 [ext_resource type="Texture2D" uid="uid://djyrwfe5p1f8b" path="res://enemies/IDLE.png" id="1_6gbwl"]
 [ext_resource type="Script" uid="uid://h2im7krmgytg" path="res://enemies/enemy_wanderer.gd" id="1_kykxe"]
@@ -180,6 +180,9 @@ animations = [{
 radius = 9.0
 height = 36.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kykxe"]
+height = 36.0
+
 [node name="EnemyWanderer" type="CharacterBody2D"]
 script = ExtResource("1_kykxe")
 
@@ -192,10 +195,19 @@ autoplay = "idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_6gbwl")
-debug_color = Color(0.528416, 0.564877, 0.254377, 0.42)
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
 
+[node name="Hurtbod" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbod"]
+position = Vector2(0, -18)
+shape = SubResource("CapsuleShape2D_kykxe")
+debug_color = Color(0.926922, 0.171883, 0.523505, 0.42)
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="Hurtbod" to="." method="_on_hurtbod_area_entered"]
