@@ -9,7 +9,7 @@ func _ready() -> void:
 	current_health = max_health
 
 func decrease_health(health_amount : int):
-	current_health -+ health_amount
+	current_health -= health_amount
 	
 	if current_health < 0:
 		current_health = 0

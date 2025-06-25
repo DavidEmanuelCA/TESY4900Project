@@ -4,6 +4,7 @@ var shuriken = preload("res://shuriken.tscn")
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hand: Marker2D = $Hand
+@onready var hit_animation_player: AnimationPlayer = $HitAnimationPlayer
 
 const GRAVITY = 1000
 @export var SPEED : int = 1000
@@ -119,4 +120,5 @@ func player_animations():
 func _on_hurtbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Enemy"):
 		print("Enemy Entered ", body.damage_amount)
+		hit_animation_player.play("hit")
 		HealthManager.decrease_health(body.damage_amount)

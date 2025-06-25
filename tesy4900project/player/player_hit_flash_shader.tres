@@ -1,0 +1,75 @@
+[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://dypp0qalsdv2y"]
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_rs272"]
+parameter_name = "hit_colour"
+default_value_enabled = true
+default_value = Color(1, 0.12549, 0.0823529, 1)
+
+[sub_resource type="VisualShaderNodeBooleanParameter" id="VisualShaderNodeBooleanParameter_po2nu"]
+parameter_name = "enabled"
+
+[sub_resource type="VisualShaderNodeIf" id="VisualShaderNodeIf_rs272"]
+default_input_values = [0, 0.0, 1, 1.0, 2, 1e-05, 3, Vector3(0, 0, 0), 4, Vector3(0, 0, 0), 5, Vector3(0, 0, 0)]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_po2nu"]
+input_name = "color"
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform bool enabled;
+uniform vec4 hit_colour : source_color = vec4(1.000000, 0.125490, 0.082353, 1.000000);
+
+
+
+void fragment() {
+// BooleanParameter:3
+	bool n_out3p0 = enabled;
+
+
+// ColorParameter:2
+	vec4 n_out2p0 = hit_colour;
+
+
+// Input:5
+	vec4 n_out5p0 = COLOR;
+
+
+	vec3 n_out4p0;
+// If:4
+	float n_in4p1 = 1.00000;
+	float n_in4p2 = 0.00001;
+	if(abs((n_out3p0 ? 1.0 : 0.0) - n_in4p1) < n_in4p2)
+	{
+		n_out4p0 = vec3(n_out2p0.xyz);
+	}
+	else if((n_out3p0 ? 1.0 : 0.0) < n_in4p1)
+	{
+		n_out4p0 = vec3(n_out5p0.xyz);
+	}
+	else
+	{
+		n_out4p0 = vec3(n_out5p0.xyz);
+	}
+
+
+// Output:0
+	COLOR.rgb = n_out4p0;
+
+
+}
+"
+graph_offset = Vector2(-451.829, 84.5943)
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(280, 200)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorParameter_rs272")
+nodes/fragment/2/position = Vector2(-480, 360)
+nodes/fragment/3/node = SubResource("VisualShaderNodeBooleanParameter_po2nu")
+nodes/fragment/3/position = Vector2(-480, 200)
+nodes/fragment/4/node = SubResource("VisualShaderNodeIf_rs272")
+nodes/fragment/4/position = Vector2(-80, 200)
+nodes/fragment/5/node = SubResource("VisualShaderNodeInput_po2nu")
+nodes/fragment/5/position = Vector2(-480, 600)
+nodes/fragment/connections = PackedInt32Array(4, 0, 0, 0, 2, 0, 4, 3, 3, 0, 4, 0, 5, 0, 4, 4, 5, 0, 4, 5)
