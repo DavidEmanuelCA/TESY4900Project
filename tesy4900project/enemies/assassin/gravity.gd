@@ -8,3 +8,4 @@ const GRAVITY : int = 1000
 func _physics_process(delta: float) -> void:
 	if !character_body_2d.is_on_floor():
 		character_body_2d.velocity.y += GRAVITY * delta
+	character_body_2d.move_and_slide()
