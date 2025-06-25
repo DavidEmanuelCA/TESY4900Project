@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var wanderer_death_effect = preload("res://enemies/wanderer_death_effect.tscn")
+var wanderer_death_effect = preload("res://enemies/wanderer/wanderer_death_effect.tscn")
 
 @export var PATROL_POINTS : Node
 @export var SPEED : int = 1500
