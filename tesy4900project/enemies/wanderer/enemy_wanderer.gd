@@ -6,6 +6,7 @@ var wanderer_death_effect = preload("res://enemies/wanderer/wanderer_death_effec
 @export var SPEED : int = 1500
 @export var WAIT_TIME : int = 3
 @export var health_amount : int = 3
+@export var damage_amount : int = 1
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var timer: Timer = $Timer

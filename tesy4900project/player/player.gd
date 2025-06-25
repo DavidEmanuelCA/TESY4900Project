@@ -114,3 +114,9 @@ func player_animations():
 	#elif current_state != STATE.IDLE and animated_sprite_2d.animation == "throw":
 		#await get_tree().create_timer(1.5).timeout
 		#return
+
+
+func _on_hurtbox_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Enemy"):
+		print("Enemy Entered ", body.damage_amount)
+		HealthManager.decrease_health(body.damage_amount)

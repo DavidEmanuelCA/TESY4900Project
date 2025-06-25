@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://lw1fq3w5gjv"]
+[gd_scene load_steps=32 format=3 uid="uid://lw1fq3w5gjv"]
 
 [ext_resource type="Script" uid="uid://drc1xlhrp3u2n" path="res://player/player.gd" id="1_g1dw6"]
 [ext_resource type="Texture2D" uid="uid://cu2sc8sgeupwt" path="res://player/IDLE.png" id="1_rkbax"]
@@ -198,6 +198,10 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e7oew"]
 height = 36.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qjkh3"]
+radius = 11.0
+height = 34.0
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
 script = ExtResource("1_g1dw6")
@@ -217,4 +221,14 @@ shape = SubResource("CapsuleShape2D_e7oew")
 [node name="Hand" type="Marker2D" parent="."]
 position = Vector2(21, -15)
 
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="HurtboxCollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -18)
+shape = SubResource("CapsuleShape2D_qjkh3")
+debug_color = Color(0.801564, 0.37045, 0.521855, 0.42)
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://de6ntdlqpptf4"]
+[gd_scene load_steps=8 format=3 uid="uid://de6ntdlqpptf4"]
 
 [ext_resource type="PackedScene" uid="uid://d2lft6leq5ssr" path="res://levels/base_level.tscn" id="1_7dtao"]
 [ext_resource type="PackedScene" uid="uid://gk6mt5femrdu" path="res://background/parallax_background.tscn" id="2_kpfnq"]
 [ext_resource type="Texture2D" uid="uid://cgi3l4m6vty4p" path="res://tileset/tileset_1.png" id="3_kpfnq"]
 [ext_resource type="PackedScene" uid="uid://c4stwsga3a0cr" path="res://enemies/assassin/enemy_assassin.tscn" id="4_hvxhd"]
+[ext_resource type="PackedScene" uid="uid://qifnl3xwm5dw" path="res://enemies/wanderer/enemy_wanderer.tscn" id="5_mo4vu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hvxhd"]
 texture = ExtResource("3_kpfnq")
@@ -212,3 +213,6 @@ layer_0/tile_data = PackedInt32Array(65536, 327680, 2, 131072, 327680, 2, 65537,
 
 [node name="enemy_assassin" parent="." index="3" instance=ExtResource("4_hvxhd")]
 position = Vector2(167, -122)
+
+[node name="EnemyWanderer" parent="." index="4" instance=ExtResource("5_mo4vu")]
+position = Vector2(606, -105)
