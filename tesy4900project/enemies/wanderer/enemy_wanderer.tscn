@@ -1,8 +1,8 @@
 [gd_scene load_steps=29 format=3 uid="uid://qifnl3xwm5dw"]
 
-[ext_resource type="Texture2D" uid="uid://djyrwfe5p1f8b" path="res://enemies/IDLE.png" id="1_6gbwl"]
-[ext_resource type="Script" uid="uid://h2im7krmgytg" path="res://enemies/enemy_wanderer.gd" id="1_kykxe"]
-[ext_resource type="Texture2D" uid="uid://bwtv3pqfpv8h2" path="res://enemies/RUN.png" id="2_kykxe"]
+[ext_resource type="Texture2D" uid="uid://djyrwfe5p1f8b" path="res://enemies/wanderer/IDLE.png" id="1_6gbwl"]
+[ext_resource type="Script" uid="uid://h2im7krmgytg" path="res://enemies/wanderer/enemy_wanderer.gd" id="1_kykxe"]
+[ext_resource type="Texture2D" uid="uid://bwtv3pqfpv8h2" path="res://enemies/wanderer/RUN.png" id="2_kykxe"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hgf8i"]
 atlas = ExtResource("1_6gbwl")
