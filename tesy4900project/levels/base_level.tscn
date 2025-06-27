@@ -1,10 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://d2lft6leq5ssr"]
+[gd_scene load_steps=3 format=3 uid="uid://d2lft6leq5ssr"]
 
+[ext_resource type="Script" uid="uid://xs0ht4doponq" path="res://player/player_camera.gd" id="1_ew5uy"]
 [ext_resource type="PackedScene" uid="uid://lw1fq3w5gjv" path="res://player/player.tscn" id="2_hjsbj"]
 
 [node name="BaseLevel" type="Node2D"]
 
+[node name="PlayerCamera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(52, -117)
+script = ExtResource("1_ew5uy")
+player = NodePath("../Player")
+
 [node name="Player" parent="." instance=ExtResource("2_hjsbj")]
 position = Vector2(52, -117)
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
