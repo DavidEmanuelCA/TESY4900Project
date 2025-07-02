@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://de6ntdlqpptf4"]
+[gd_scene load_steps=11 format=3 uid="uid://de6ntdlqpptf4"]
 
 [ext_resource type="PackedScene" uid="uid://d2lft6leq5ssr" path="res://levels/base_level.tscn" id="1_7dtao"]
 [ext_resource type="PackedScene" uid="uid://gk6mt5femrdu" path="res://background/parallax_background.tscn" id="2_kpfnq"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c4stwsga3a0cr" path="res://enemies/assassin/enemy_assassin.tscn" id="4_hvxhd"]
 [ext_resource type="PackedScene" uid="uid://qifnl3xwm5dw" path="res://enemies/wanderer/enemy_wanderer.tscn" id="5_mo4vu"]
 [ext_resource type="PackedScene" uid="uid://bsu3y3nqorekc" path="res://pickups/health_pickups/health_pickup.tscn" id="6_dvnjj"]
+[ext_resource type="PackedScene" uid="uid://ma4wyp0ssavk" path="res://collectibles/blue_gem/blue_gem.tscn" id="8_1digy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hvxhd"]
 texture = ExtResource("3_kpfnq")
@@ -224,4 +225,9 @@ position = Vector2(763, -88)
 [node name="HealthPickup" parent="Pickups" index="0" instance=ExtResource("6_dvnjj")]
 position = Vector2(361, 5)
 
-[node name="GameScreen" parent="." index="6" instance=ExtResource("2_n6wdg")]
+[node name="Collectibles" type="Node" parent="." index="6"]
+
+[node name="BlueGem" parent="Collectibles" index="0" instance=ExtResource("8_1digy")]
+position = Vector2(466, 4)
+
+[node name="GameScreen" parent="." index="7" instance=ExtResource("2_n6wdg")]

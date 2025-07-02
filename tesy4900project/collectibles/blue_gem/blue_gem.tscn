@@ -1,0 +1,104 @@
+[gd_scene load_steps=13 format=3 uid="uid://ma4wyp0ssavk"]
+
+[ext_resource type="Texture2D" uid="uid://b58beatwrx3yv" path="res://collectibles/blue_gem/Items_BlueGem.png" id="1_1nqsn"]
+[ext_resource type="Script" uid="uid://cavbtk65ibp8p" path="res://collectibles/blue_gem/blue_gem.gd" id="1_hkx1v"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hkx1v"]
+atlas = ExtResource("1_1nqsn")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60g2m"]
+atlas = ExtResource("1_1nqsn")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gyo1n"]
+atlas = ExtResource("1_1nqsn")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_25pao"]
+atlas = ExtResource("1_1nqsn")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xuiyi"]
+atlas = ExtResource("1_1nqsn")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qvftl"]
+atlas = ExtResource("1_1nqsn")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p7tmu"]
+atlas = ExtResource("1_1nqsn")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sdwrg"]
+atlas = ExtResource("1_1nqsn")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_475kn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hkx1v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60g2m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gyo1n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_25pao")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xuiyi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qvftl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p7tmu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sdwrg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1nqsn"]
+radius = 9.0
+
+[node name="BlueGem" type="Node2D"]
+script = ExtResource("1_hkx1v")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_475kn")
+autoplay = "default"
+frame_progress = 0.32739
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_1nqsn")
+debug_color = Color(0.282957, 0.613888, 0.421082, 0.42)
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "1"
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

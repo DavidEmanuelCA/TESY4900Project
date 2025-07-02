@@ -1,8 +1,47 @@
-[gd_scene load_steps=2 format=3 uid="uid://ckoxe2tuxuagt"]
+[gd_scene load_steps=4 format=3 uid="uid://ckoxe2tuxuagt"]
 
 [ext_resource type="PackedScene" uid="uid://cb5muoekfxme4" path="res://ui/healthbar/health_bar.tscn" id="1_g4tl3"]
+[ext_resource type="Script" uid="uid://xwmt4o6wg5ju" path="res://ui/game_screen.gd" id="1_vb34k"]
+[ext_resource type="Texture2D" uid="uid://b58beatwrx3yv" path="res://collectibles/blue_gem/Items_BlueGem.png" id="2_sp4y4"]
 
 [node name="GameScreen" type="CanvasLayer"]
+script = ExtResource("1_vb34k")
 
-[node name="HealthBar" parent="." instance=ExtResource("1_g4tl3")]
-position = Vector2(10, 10)
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="HealthBar" parent="MarginContainer/VBoxContainer/Control" instance=ExtResource("1_g4tl3")]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
+texture = ExtResource("2_sp4y4")
+centered = false
+hframes = 8
+
+[node name="CollectibleLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "0"
