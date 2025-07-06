@@ -5,10 +5,10 @@
 
 [node name="BaseLevel" type="Node2D"]
 
+[node name="Player" parent="." instance=ExtResource("2_hjsbj")]
+position = Vector2(52, -117)
+
 [node name="PlayerCamera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(52, -117)
 script = ExtResource("1_ew5uy")
 player = NodePath("../Player")
-
-[node name="Player" parent="." instance=ExtResource("2_hjsbj")]
-position = Vector2(52, -117)
