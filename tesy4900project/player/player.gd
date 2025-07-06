@@ -11,14 +11,17 @@ const GRAVITY = 1000
 @export var SPEED : int = 1000
 @export var MAX_HORIZONTAL_SPEED : int = 300
 @export var SLOW_DOWN_SPEED : int = 2000
+
 @export var JUMP_HEIGHT : int = -300
 @export var JUMP_HORIZONTAL_SPEED : int = 1000
 @export var JUMP_MAX_HORIZONTAL_SPEED : int = 300
+@export var jump_count : int = 1
 
 enum STATE { IDLE, RUN, JUMP, THROW }
 
 var current_state : STATE
 var hand_position
+var current_jump_count : int
 
 func _ready():
 	current_state = STATE.IDLE
@@ -64,10 +67,19 @@ func player_run(delta : float):
 		animated_sprite_2d.flip_h = false if direction > 0 else true
 
 func player_jump(delta : float):
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	var jump_input : bool = Input.is_action_just_pressed("jump")
+	
+	if is_on_floor() and jump_input:
+		current_jump_count = 0
 		velocity.y = JUMP_HEIGHT
+		current_jump_count += 1
 		current_state = STATE.JUMP
-		
+	
+	if !is_on_floor() and jump_input and current_jump_count < jump_count:
+		velocity.y = JUMP_HEIGHT
+		current_jump_count += 1
+		current_state = STATE.JUMP
+	
 	if !is_on_floor() and current_state == STATE.JUMP:
 		var direction = input_movement()
 		velocity.x += direction * JUMP_HORIZONTAL_SPEED * delta
