@@ -1,6 +1,42 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://ci6mymsxb108r"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://ci6mymsxb108r"]
 
 [ext_resource type="FontFile" uid="uid://dxqtayr23h2ce" path="res://ui/theme/Weiholmir_regular.ttf" id="1_v71op"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v71op"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.258824, 0.298039, 0.431373, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.164706, 0.184314, 0.305882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tgo0r"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.215443, 0.249791, 0.366984, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.164706, 0.184314, 0.305882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7gvb"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.353431, 0.400976, 0.56041, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.164706, 0.184314, 0.305882, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ghru"]
 content_margin_left = 10.0
@@ -14,13 +50,29 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.164706, 0.184314, 0.305882, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xyriv"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.215443, 0.249791, 0.366984, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.164706, 0.184314, 0.305882, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dtkdr"]
 bg_color = Color(1, 0.635294, 0.0784314, 0.729412)
 
 [resource]
 Button/font_sizes/font_size = 14
 Button/fonts/font = ExtResource("1_v71op")
+Button/styles/disabled = SubResource("StyleBoxFlat_v71op")
+Button/styles/focus = SubResource("StyleBoxFlat_tgo0r")
+Button/styles/hover = SubResource("StyleBoxFlat_h7gvb")
 Button/styles/normal = SubResource("StyleBoxFlat_4ghru")
+Button/styles/pressed = SubResource("StyleBoxFlat_xyriv")
 MarginContainer/constants/margin_bottom = 10
 MarginContainer/constants/margin_left = 10
 MarginContainer/constants/margin_right = 10

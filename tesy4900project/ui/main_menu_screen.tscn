@@ -1,11 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://cp5kahctgxnq1"]
+[gd_scene load_steps=6 format=3 uid="uid://cp5kahctgxnq1"]
 
+[ext_resource type="Script" uid="uid://dhkwn4ryeey86" path="res://ui/main_menu_screen.gd" id="1_5aifs"]
 [ext_resource type="Texture2D" uid="uid://c51ckbtpdvl8u" path="res://ui/Preview.png" id="1_rmr83"]
 [ext_resource type="Theme" uid="uid://ci6mymsxb108r" path="res://ui/theme/game_theme.tres" id="1_t7e0r"]
 [ext_resource type="Texture2D" uid="uid://cgrlob1voiofe" path="res://ui/DEATH.png" id="3_8uxxo"]
 [ext_resource type="Texture2D" uid="uid://chs65g8lf06jn" path="res://ui/JUMP ATTACK (FLAMING SWORD).png" id="4_ei257"]
 
-[node name="MainMenu" type="CanvasLayer"]
+[node name="MainMenuScreen" type="CanvasLayer"]
+process_mode = 3
+layer = 2
+script = ExtResource("1_5aifs")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 anchors_preset = 15
@@ -65,3 +69,6 @@ texture = ExtResource("4_ei257")
 flip_h = true
 region_enabled = true
 region_rect = Rect2(792, 16, 80, 72)
+
+[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
