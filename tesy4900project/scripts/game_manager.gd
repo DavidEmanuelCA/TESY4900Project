@@ -5,7 +5,7 @@ const PAUSE_MENU_SCREEN = preload("res://ui/pause_menu_screen.tscn")
 const LEVEL_1 = preload("res://levels/level_1.tscn")
 
 func _ready() -> void:
-	RenderingServer.set_default_clear_color(Color(0.16,0.18,0.30,1.00))
+	RenderingServer.set_default_clear_color(Color(0.165,0.184,0.306,1.0))
 	
 	SettingsManager.load_settings()
 
