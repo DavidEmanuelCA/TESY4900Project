@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bvovge00gmaoj"]
+[gd_scene load_steps=20 format=3 uid="uid://bvovge00gmaoj"]
 
 [ext_resource type="PackedScene" uid="uid://d2lft6leq5ssr" path="res://levels/base_level.tscn" id="1_vn7o3"]
 [ext_resource type="PackedScene" uid="uid://gk6mt5femrdu" path="res://background/parallax_background.tscn" id="2_jirdo"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cgi3l4m6vty4p" path="res://tileset/tileset_1.png" id="6_btoec"]
 [ext_resource type="PackedScene" uid="uid://qifnl3xwm5dw" path="res://enemies/wanderer/enemy_wanderer.tscn" id="7_gwceb"]
 [ext_resource type="PackedScene" uid="uid://ckoxe2tuxuagt" path="res://ui/game_screen.tscn" id="8_l53as"]
+[ext_resource type="PackedScene" uid="uid://clwdj75e0llav" path="res://levels/Door/door.tscn" id="9_3sk1a"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l53as"]
 texture = ExtResource("3_n46q3")
@@ -795,3 +796,7 @@ smoothing_enabled = true
 smoothing_distance = 1
 
 [node name="GameScreen" parent="." index="7" instance=ExtResource("8_l53as")]
+
+[node name="Door" parent="." index="8" instance=ExtResource("9_3sk1a")]
+position = Vector2(2608, -24)
+next_scene = "Level2"
