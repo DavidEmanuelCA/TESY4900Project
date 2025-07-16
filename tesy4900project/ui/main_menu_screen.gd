@@ -15,3 +15,11 @@ func _on_exit_button_pressed() -> void:
 func _on_settings_button_pressed() -> void:
 	var settings_menu_screen_instance = SETTINGS_MENU_SCREEN.instantiate()
 	get_tree().get_root().add_child(settings_menu_screen_instance)
+
+func _ready():
+	get_viewport().size_changed.connect(_on_viewport_resize)
+	_on_viewport_resize()
+
+func _on_viewport_resize():
+	var screen_size = get_viewport().get_visible_rect().size
+	$TextureRect.size = screen_size

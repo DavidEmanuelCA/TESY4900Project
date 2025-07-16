@@ -18,6 +18,9 @@ func _ready() -> void:
 		resolution_option_button.add_item(resolution)
 	
 	initialise_controls()
+	
+	get_viewport().size_changed.connect(_on_viewport_resize)
+	_on_viewport_resize()
 
 func initialise_controls():
 	SettingsManager.load_settings()
@@ -38,3 +41,7 @@ func _on_resolution_option_button_item_selected(index: int) -> void:
 func _on_main_menu_button_pressed() -> void:
 	SettingsManager.save_settings()
 	queue_free()
+
+func _on_viewport_resize():
+	var screen_size = get_viewport().get_visible_rect().size
+	$TextureRect.size = screen_size

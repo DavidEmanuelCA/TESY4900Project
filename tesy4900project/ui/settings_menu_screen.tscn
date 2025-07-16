@@ -1,10 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://v2ok86l8d56i"]
+[gd_scene load_steps=4 format=3 uid="uid://v2ok86l8d56i"]
 
 [ext_resource type="Script" uid="uid://bkfafe21x30ar" path="res://ui/settings_menu_screen.gd" id="1_v7tl4"]
-[ext_resource type="Texture2D" uid="uid://c51ckbtpdvl8u" path="res://ui/Preview.png" id="2_uaw1e"]
+[ext_resource type="Texture2D" uid="uid://bcsvmgr42aglj" path="res://ui/ComfyUI_00005_.png" id="2_gidpi"]
 [ext_resource type="Theme" uid="uid://ci6mymsxb108r" path="res://ui/theme/game_theme.tres" id="3_tiwjb"]
-[ext_resource type="Texture2D" uid="uid://cgrlob1voiofe" path="res://ui/DEATH.png" id="4_u0dvs"]
-[ext_resource type="Texture2D" uid="uid://chs65g8lf06jn" path="res://ui/JUMP ATTACK (FLAMING SWORD).png" id="5_doxyc"]
 
 [node name="SettingsMenuScreen" type="CanvasLayer"]
 layer = 2
@@ -12,17 +10,18 @@ script = ExtResource("1_v7tl4")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(0.401095, 0.404745, 0.412046, 1)
+texture_filter = 2
+texture_repeat = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -94.0
-offset_top = -98.0
-offset_right = 706.0
-offset_bottom = 412.0
+offset_right = 4260.0
+offset_bottom = 2520.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_uaw1e")
+texture = ExtResource("2_gidpi")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -57,21 +56,6 @@ layout_mode = 2
 process_mode = 3
 layout_mode = 2
 text = "EXIT"
-
-[node name="Death" type="Sprite2D" parent="."]
-position = Vector2(58, 219)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("4_u0dvs")
-region_enabled = true
-region_rect = Rect2(416, 32, 32, 40)
-
-[node name="JumpAttack(flamingSword)" type="Sprite2D" parent="."]
-position = Vector2(132, 152)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("5_doxyc")
-flip_h = true
-region_enabled = true
-region_rect = Rect2(792, 16, 80, 72)
 
 [connection signal="item_selected" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/WindowModeOptionButton" to="." method="_on_window_mode_option_button_item_selected"]
 [connection signal="item_selected" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResolutionOptionButton" to="." method="_on_resolution_option_button_item_selected"]
