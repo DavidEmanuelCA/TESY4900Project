@@ -1,4 +1,4 @@
-[gd_scene load_steps=82 format=3 uid="uid://lw1fq3w5gjv"]
+[gd_scene load_steps=83 format=3 uid="uid://lw1fq3w5gjv"]
 
 [ext_resource type="Script" uid="uid://drc1xlhrp3u2n" path="res://player/player.gd" id="1_g1dw6"]
 [ext_resource type="Texture2D" uid="uid://cu2sc8sgeupwt" path="res://player/IDLE.png" id="1_rkbax"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://dtlqkebnxxun4" path="res://player/player_states/fall_sate.gd" id="15_wodsf"]
 [ext_resource type="Script" uid="uid://dl77pgtl6cog2" path="res://player/player_states/run_state.gd" id="16_32hag"]
 [ext_resource type="Script" uid="uid://b3x5ksax2jflh" path="res://player/player_states/jump_state.gd" id="17_tqiix"]
+[ext_resource type="Script" uid="uid://8u513myfsa37" path="res://player/player_states/throw_stand_state.gd" id="18_e7oew"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_boad6"]
 shader = ExtResource("2_g6k8r")
@@ -521,17 +522,15 @@ script = ExtResource("1_g1dw6")
 material = SubResource("ShaderMaterial_boad6")
 position = Vector2(0, -18)
 sprite_frames = SubResource("SpriteFrames_tqiix")
-animation = &"death"
+animation = &"throw"
 autoplay = "idle"
-frame = 5
-frame_progress = 0.360333
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_e7oew")
 
 [node name="Hand" type="Marker2D" parent="."]
-position = Vector2(21, -15)
+position = Vector2(17, -15)
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 2
@@ -566,6 +565,12 @@ script = ExtResource("17_tqiix")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 jump_height = -250.0
+
+[node name="ThrowStand" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "hand")]
+script = ExtResource("18_e7oew")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+hand = NodePath("../../Hand")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

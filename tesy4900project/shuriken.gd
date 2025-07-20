@@ -5,9 +5,11 @@ var shuriken_impact_effect = preload("res://player/shuriken_impact_effect.tscn")
 var SPEED : int = 500
 var direction : int
 var damage_amount : int = 1
+var move_x_direction : bool
 
 func  _physics_process(delta: float) -> void:
-	move_local_x(direction * delta * SPEED)
+	if move_x_direction:
+		move_local_x(direction * delta * SPEED)
 
 func _on_timer_timeout() -> void:
 	queue_free()
