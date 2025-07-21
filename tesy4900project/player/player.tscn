@@ -1,4 +1,4 @@
-[gd_scene load_steps=84 format=3 uid="uid://lw1fq3w5gjv"]
+[gd_scene load_steps=77 format=3 uid="uid://lw1fq3w5gjv"]
 
 [ext_resource type="Script" uid="uid://drc1xlhrp3u2n" path="res://player/player.gd" id="1_g1dw6"]
 [ext_resource type="Texture2D" uid="uid://cu2sc8sgeupwt" path="res://player/IDLE.png" id="1_rkbax"]
@@ -12,13 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://uycnoufco6sf" path="res://player/DEATH.png" id="6_ebec5"]
 [ext_resource type="Texture2D" uid="uid://chd5vpmey5hih" path="res://player/DEFEND.png" id="6_kb6p2"]
 [ext_resource type="Texture2D" uid="uid://bcdpfekoj8n4x" path="res://player/HURT.png" id="8_wodsf"]
-[ext_resource type="Script" uid="uid://c2x7aehkjnvom" path="res://scripts/state_machine/node_finite_state_machine.gd" id="13_kb6p2"]
-[ext_resource type="Script" uid="uid://c0t8la4j2sr4n" path="res://player/player_states/idle_state.gd" id="14_wodsf"]
-[ext_resource type="Script" uid="uid://dtlqkebnxxun4" path="res://player/player_states/fall_sate.gd" id="15_wodsf"]
-[ext_resource type="Script" uid="uid://dl77pgtl6cog2" path="res://player/player_states/run_state.gd" id="16_32hag"]
-[ext_resource type="Script" uid="uid://b3x5ksax2jflh" path="res://player/player_states/jump_state.gd" id="17_tqiix"]
-[ext_resource type="Script" uid="uid://8u513myfsa37" path="res://player/player_states/throw_stand_state.gd" id="18_e7oew"]
-[ext_resource type="Script" uid="uid://lh74l55swaf8" path="res://player/player_states/UltimatePlatformerController.gd" id="19_c35mf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_boad6"]
 shader = ExtResource("2_g6k8r")
@@ -398,7 +391,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_8pxes")
 }],
 "loop": false,
-"name": &"fall",
+"name": &"falling",
 "speed": 5.0
 }, {
 "frames": [{
@@ -436,7 +429,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 8.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -515,15 +508,30 @@ height = 36.0
 radius = 11.0
 height = 34.0
 
-[node name="Player" type="CharacterBody2D" groups=["Player"]]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("PlayerSprite", "PlayerCollider") groups=["Player"]]
+disable_mode = 1
 collision_layer = 2
 script = ExtResource("1_g1dw6")
+PlayerSprite = NodePath("AnimatedSprite2D")
+PlayerCollider = NodePath("CollisionShape2D")
+maxSpeed = 250.0
+timeToReachMaxSpeed = 0.5
+timeToReachZeroSpeed = 0.5
+jumpHeight = 1.5
+jumps = 2
+gravityScale = 40.0
+terminalVelocity = 400.0
+descendingGravityFactor = 1.5
+run = true
+jump = true
+idle = true
+falling = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_boad6")
 position = Vector2(0, -18)
 sprite_frames = SubResource("SpriteFrames_tqiix")
-animation = &"throw"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -542,41 +550,4 @@ position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_qjkh3")
 debug_color = Color(0.801564, 0.37045, 0.521855, 0.42)
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_node_state")]
-script = ExtResource("13_kb6p2")
-initial_node_state = NodePath("Idle")
-
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
-script = ExtResource("14_wodsf")
-character_body_2d = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-
-[node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
-script = ExtResource("15_wodsf")
-character_body_2d = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-
-[node name="Run" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
-script = ExtResource("16_32hag")
-character_body_2d = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-
-[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
-script = ExtResource("17_tqiix")
-character_body_2d = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-jump_height = -250.0
-
-[node name="ThrowStand" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "hand")]
-script = ExtResource("18_e7oew")
-character_body_2d = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-hand = NodePath("../../Hand")
-
-[node name="Movement" type="Node" parent="StateMachine" node_paths=PackedStringArray("PlayerSprite", "PlayerCollider")]
-script = ExtResource("19_c35mf")
-PlayerSprite = NodePath("../../AnimatedSprite2D")
-PlayerCollider = NodePath("../../CollisionShape2D")
-
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]
