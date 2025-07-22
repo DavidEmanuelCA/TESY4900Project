@@ -508,24 +508,20 @@ height = 36.0
 radius = 11.0
 height = 34.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("PlayerSprite", "PlayerCollider") groups=["Player"]]
-disable_mode = 1
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collider") groups=["Player"]]
 collision_layer = 2
+platform_floor_layers = 4294901760
 script = ExtResource("1_g1dw6")
-PlayerSprite = NodePath("AnimatedSprite2D")
-PlayerCollider = NodePath("CollisionShape2D")
-maxSpeed = 250.0
-timeToReachMaxSpeed = 0.5
-timeToReachZeroSpeed = 0.5
-jumpHeight = 1.5
-jumps = 2
-gravityScale = 40.0
-terminalVelocity = 400.0
-descendingGravityFactor = 1.5
-run = true
-jump = true
-idle = true
-falling = true
+sprite = NodePath("AnimatedSprite2D")
+collider = NodePath("CollisionShape2D")
+max_speed = 225.0
+accel_time = 0.05
+decel_time = 0.05
+jump_height_px = 65.0
+time_to_peak = 0.35
+jump_buffer_time = 0.05
+max_jumps = 3
+terminal_velocity = 700.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_boad6")
