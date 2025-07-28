@@ -517,17 +517,18 @@ collider = NodePath("CollisionShape2D")
 max_speed = 225.0
 accel_time = 0.05
 decel_time = 0.05
-jump_height_px = 65.0
+jump_height_px = 60.0
 time_to_peak = 0.35
+coyote_time = 0.25
 jump_buffer_time = 0.05
-max_jumps = 3
-terminal_velocity = 700.0
+max_jumps = 2
+terminal_velocity = 675.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_boad6")
 position = Vector2(0, -18)
 sprite_frames = SubResource("SpriteFrames_tqiix")
-animation = &"idle"
+animation = &"attack3"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

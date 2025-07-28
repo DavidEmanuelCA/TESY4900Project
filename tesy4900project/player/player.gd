@@ -23,24 +23,22 @@ class_name PlatformerController2D
 # Internal timers and physics values
 var coyote_timer := 0.0
 var jump_buffer_timer := 0.0
-var jumps_left := 0
 var jump_speed := 0.0
 var up_gravity := 0.0
 var down_gravity := 0.0
 var is_jumping := false
-var last_on_floor := false
+var jump_count := 0
+var last_time_on_floor := 0
 
 func _ready():
 	jump_speed = -2.0 * jump_height_px / time_to_peak
 	up_gravity = 2.0 * jump_height_px / (time_to_peak * time_to_peak)
 	down_gravity = 2.0 * jump_height_px / (time_to_fall * time_to_fall)
-	jumps_left = max_jumps
 
 func _physics_process(delta):
 	# timers
 	if is_on_floor():
 		coyote_timer = coyote_time
-		jumps_left = max_jumps
 		if not is_jumping:
 			handle_grounded_animations()
 	else:
@@ -87,23 +85,28 @@ func handle_horizontal_movement(delta):
 	velocity.x = move_toward(velocity.x, target_speed, accel * delta)
 
 func handle_jumping(delta):
-	# buffer jump
+	# 1 — Track when on the ground
+	if is_on_floor():
+		last_time_on_floor = Time.get_ticks_msec()
+		jump_count = 0
+		is_jumping = false
+
+	# 2 — Buffer jump input
 	if Input.is_action_just_pressed("jump"):
 		jump_buffer_timer = jump_buffer_time
 	else:
 		jump_buffer_timer = max(jump_buffer_timer - delta, 0.0)
 
-	# perform jump
-	if jump_buffer_timer > 0.0 and coyote_timer > 0.0 and jumps_left > 0:
+	# 3 — Decide if jumping allowed
+	var time_since_floor = (Time.get_ticks_msec() - last_time_on_floor) / 1000.0
+	var can_coyote_jump = time_since_floor <= coyote_time
+
+	if jump_buffer_timer > 0.0 and (can_coyote_jump or jump_count < max_jumps):
 		velocity.y = jump_speed
-		jumps_left -= 1
+		jump_count += 1
 		jump_buffer_timer = 0.0
 		is_jumping = true
 
-	# variable jump on release
+	# 4 — Variable jump cut
 	if variable_jump and Input.is_action_just_released("jump") and velocity.y < 0.0:
 		velocity.y *= 0.5
-
-	# reset jump state when landing
-	if is_jumping and is_on_floor():
-		is_jumping = false
