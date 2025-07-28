@@ -29,6 +29,7 @@ var down_gravity := 0.0
 var is_jumping := false
 var jump_count := 0
 var last_time_on_floor := 0
+var last_move_dir := 1  
 
 func _ready():
 	jump_speed = -2.0 * jump_height_px / time_to_peak
@@ -56,14 +57,22 @@ func _physics_process(delta):
 
 	move_and_slide()
 
+#func handle_grounded_animations():
+	#var dir = Input.get_action_strength("right") - Input.get_action_strength("left")
+	#if abs(dir) > 0.1:
+		#sprite.speed_scale = abs(velocity.x) / max_speed
+		#sprite.play("run")
+	#else:
+		#sprite.play("idle")
+	#sprite.flip_h = velocity.x < 0.0
+
 func handle_grounded_animations():
-	var dir = Input.get_action_strength("right") - Input.get_action_strength("left")
-	if abs(dir) > 0.1:
+	if abs(velocity.x) > 0.1:
 		sprite.speed_scale = abs(velocity.x) / max_speed
 		sprite.play("run")
 	else:
 		sprite.play("idle")
-	sprite.flip_h = velocity.x < 0.0
+	sprite.flip_h = last_move_dir < 0
 
 func handle_airborne_animations():
 	if velocity.y < 0.0:
@@ -78,11 +87,21 @@ func apply_gravity(delta):
 		var g = up_gravity if velocity.y < 0.0 else down_gravity
 		velocity.y = min(velocity.y + g * delta, terminal_velocity)
 
+#func handle_horizontal_movement(delta):
+	#var dir = Input.get_action_strength("right") - Input.get_action_strength("left")
+	#var target_speed = dir * max_speed
+	#var accel = abs(target_speed - velocity.x) / accel_time
+	#velocity.x = move_toward(velocity.x, target_speed, accel * delta)
+
 func handle_horizontal_movement(delta):
 	var dir = Input.get_action_strength("right") - Input.get_action_strength("left")
 	var target_speed = dir * max_speed
 	var accel = abs(target_speed - velocity.x) / accel_time
 	velocity.x = move_toward(velocity.x, target_speed, accel * delta)
+	
+	# Update last_move_dir only when velocity.x is significant
+	if abs(velocity.x) > 0.1:
+		last_move_dir = sign(velocity.x)
 
 func handle_jumping(delta):
 	# 1 — Track when on the ground
