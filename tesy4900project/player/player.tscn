@@ -1,9 +1,8 @@
-[gd_scene load_steps=77 format=3 uid="uid://lw1fq3w5gjv"]
+[gd_scene load_steps=75 format=3 uid="uid://lw1fq3w5gjv"]
 
 [ext_resource type="Script" uid="uid://drc1xlhrp3u2n" path="res://player/player.gd" id="1_g1dw6"]
 [ext_resource type="Texture2D" uid="uid://cu2sc8sgeupwt" path="res://player/IDLE.png" id="1_rkbax"]
 [ext_resource type="Texture2D" uid="uid://c8qy5h2xtv0rl" path="res://player/RUN.png" id="2_g1dw6"]
-[ext_resource type="Shader" uid="uid://dypp0qalsdv2y" path="res://player/player_hit_flash_shader.tres" id="2_g6k8r"]
 [ext_resource type="Texture2D" uid="uid://1ciwmhacma1w" path="res://player/ATTACK 1.png" id="3_2ieo8"]
 [ext_resource type="Texture2D" uid="uid://dh83rk1tuklvj" path="res://player/JUMP.png" id="3_yw30f"]
 [ext_resource type="Texture2D" uid="uid://d1bppi3mru0ra" path="res://player/ATTACK 2.png" id="4_ebec5"]
@@ -12,11 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://uycnoufco6sf" path="res://player/DEATH.png" id="6_ebec5"]
 [ext_resource type="Texture2D" uid="uid://chd5vpmey5hih" path="res://player/DEFEND.png" id="6_kb6p2"]
 [ext_resource type="Texture2D" uid="uid://bcdpfekoj8n4x" path="res://player/HURT.png" id="8_wodsf"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_boad6"]
-shader = ExtResource("2_g6k8r")
-shader_parameter/enabled = false
-shader_parameter/hit_colour = Color(1, 0.12549, 0.082353, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uw77l"]
 atlas = ExtResource("3_2ieo8")
@@ -525,10 +519,9 @@ max_jumps = 2
 terminal_velocity = 675.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-material = SubResource("ShaderMaterial_boad6")
 position = Vector2(0, -18)
 sprite_frames = SubResource("SpriteFrames_tqiix")
-animation = &"attack3"
+animation = &"defend"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
