@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameManager="*res://scripts/game_manager.gd"
-HealthManager="*res://scripts/health_manager.gd"
 CollectibleManager="*res://scripts/collectible_manager.gd"
 SettingsManager="*res://scripts/settings_manager.gd"
 SceneManager="*res://scripts/scene_manager.gd"

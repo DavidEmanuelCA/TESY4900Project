@@ -20,13 +20,6 @@ class_name PlatformerController2D
 @export var variable_jump := true
 @export_range(200.0, 2000.0) var terminal_velocity := 600.0
 
-# Health Stuffs
-@export var max_health := 3
-var current_health := max_health
-var is_invincible := false
-@export var invincibility_time := 0.5
-var is_dead := false
-
 # Internal timers and physics values
 var coyote_timer := 0.0
 var jump_buffer_timer := 0.0
@@ -38,18 +31,12 @@ var jump_count := 0
 var last_time_on_floor := 0
 var last_move_dir := 1  
 
-var state_animation := ""
-
 func _ready():
 	jump_speed = -2.0 * jump_height_px / time_to_peak
 	up_gravity = 2.0 * jump_height_px / (time_to_peak * time_to_peak)
 	down_gravity = 2.0 * jump_height_px / (time_to_fall * time_to_fall)
-	
-	#$Hurtbox.connect("body_entered", Callable(self, "_on_hurtbox_body_entered"))
 
 func _physics_process(delta):
-	if state_animation in ["hurt", "death"]:
-		return
 	# timers
 	if is_on_floor():
 		coyote_timer = coyote_time
@@ -129,40 +116,3 @@ func handle_jumping(delta):
 	# Variable jump cut
 	if variable_jump and Input.is_action_just_released("jump") and velocity.y < 0.0:
 		velocity.y *= 0.5
-
-# Player health and death below
-
-func take_damage(amount: int = 1) -> void:
-	print("about to take dmg")
-	if is_invincible or is_dead:
-		return
-	current_health = clamp(current_health - amount, 0, max_health)
-	print("Player take_damage called. Health now:", current_health)
-	HealthManager.on_health_changed.emit(current_health)
-	if current_health > 0:
-		play_hurt()
-	else:
-		play_death()
-
-func play_hurt() -> void:
-	is_invincible = true
-	state_animation = "hurt"
-	sprite.play("hurt")
-	velocity = Vector2.ZERO
-	await sprite.animation_finished
-	is_invincible = false
-	state_animation = ""
-
-
-func play_death() -> void:
-	is_dead = true
-	state_animation = "death"
-	sprite.play("death")
-	velocity = Vector2.ZERO
-	set_physics_process(false)
-	await sprite.animation_finished
-	SceneManager.transition_to_scene(get_tree().current_scene.name)
-
-func _on_hurtbox_body_entered(body: Node2D) -> void:
-	if body.is_in_group("enemies"):
-		take_damage(1)

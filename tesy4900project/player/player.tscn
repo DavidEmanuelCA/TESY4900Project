@@ -539,5 +539,3 @@ collision_mask = 4
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_qjkh3")
 debug_color = Color(0.801564, 0.37045, 0.521855, 0.42)
-
-[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]
