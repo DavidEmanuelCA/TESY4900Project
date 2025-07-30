@@ -22,6 +22,7 @@ CollectibleManager="*res://scripts/collectible_manager.gd"
 SettingsManager="*res://scripts/settings_manager.gd"
 SceneManager="*res://scripts/scene_manager.gd"
 InventoryManager="*res://scripts/inventory_manager.gd"
+Signalbus="*res://scripts/signalbus.gd"
 
 [display]
 
@@ -31,6 +32,10 @@ window/size/window_width_override=1720
 window/size/window_height_override=720
 window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
+
+[global_group]
+
+enemies=""
 
 [input]
 

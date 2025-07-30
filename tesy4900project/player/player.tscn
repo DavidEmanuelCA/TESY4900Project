@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://lw1fq3w5gjv"]
+[gd_scene load_steps=78 format=3 uid="uid://lw1fq3w5gjv"]
 
 [ext_resource type="Script" uid="uid://drc1xlhrp3u2n" path="res://player/player.gd" id="1_g1dw6"]
 [ext_resource type="Texture2D" uid="uid://cu2sc8sgeupwt" path="res://player/IDLE.png" id="1_rkbax"]
@@ -11,6 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://uycnoufco6sf" path="res://player/DEATH.png" id="6_ebec5"]
 [ext_resource type="Texture2D" uid="uid://chd5vpmey5hih" path="res://player/DEFEND.png" id="6_kb6p2"]
 [ext_resource type="Texture2D" uid="uid://bcdpfekoj8n4x" path="res://player/HURT.png" id="8_wodsf"]
+[ext_resource type="PackedScene" uid="uid://byhhm8ok0t3kk" path="res://data/health/health.tscn" id="12_kb6p2"]
+[ext_resource type="PackedScene" uid="uid://dr56uprp2bwl2" path="res://states/hurt/Hurt.tscn" id="13_wodsf"]
+[ext_resource type="PackedScene" uid="uid://d0xuvpbvybjwd" path="res://states/death/Death.tscn" id="14_32hag"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uw77l"]
 atlas = ExtResource("3_2ieo8")
@@ -539,3 +542,14 @@ collision_mask = 4
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_qjkh3")
 debug_color = Color(0.801564, 0.37045, 0.521855, 0.42)
+
+[node name="Health" parent="." instance=ExtResource("12_kb6p2")]
+
+[node name="Hurt" parent="." instance=ExtResource("13_wodsf")]
+invuln_duration = 0.25
+sprite_node = NodePath("../AnimatedSprite2D")
+
+[node name="Death" parent="." instance=ExtResource("14_32hag")]
+sprite_node = NodePath("../AnimatedSprite2D")
+
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

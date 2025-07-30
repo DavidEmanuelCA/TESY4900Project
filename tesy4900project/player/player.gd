@@ -31,10 +31,19 @@ var jump_count := 0
 var last_time_on_floor := 0
 var last_move_dir := 1  
 
+@onready var health = $Health  # the Health component scene
+
 func _ready():
 	jump_speed = -2.0 * jump_height_px / time_to_peak
 	up_gravity = 2.0 * jump_height_px / (time_to_peak * time_to_peak)
 	down_gravity = 2.0 * jump_height_px / (time_to_fall * time_to_fall)
+	
+	# Connect health signals
+	if health:
+		health.health_changed.connect(Callable(self, "_on_health_changed"))
+		health.died.connect(Callable(self, "_on_player_died"))
+	else:
+		push_error("Player: Health component not found")
 
 func _physics_process(delta):
 	# timers
@@ -116,3 +125,19 @@ func handle_jumping(delta):
 	# Variable jump cut
 	if variable_jump and Input.is_action_just_released("jump") and velocity.y < 0.0:
 		velocity.y *= 0.5
+
+func _on_health_changed(current, max_health):
+	print("Player recieved health_changed: ",current, max_health)
+	Signalbus.emit_signal("player_health_changed", current, max_health)
+
+
+func _on_player_died() -> void:
+	# Disable movement
+	set_physics_process(false)
+	# Call SceneManager, global autoload
+	SceneManager.transition_to_scene(get_tree().current_scene.name)
+
+func _on_hurtbox_body_entered(body: Node2D) -> void:
+	print("hurtbox collided with: ", body.name)
+	if body.is_in_group("enemies"):
+		health.damage(1)

@@ -183,7 +183,7 @@ height = 36.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kykxe"]
 height = 36.0
 
-[node name="EnemyWanderer" type="CharacterBody2D"]
+[node name="EnemyWanderer" type="CharacterBody2D" groups=["enemies"]]
 script = ExtResource("1_kykxe")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

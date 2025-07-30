@@ -88,7 +88,7 @@ func _on_timer_timeout() -> void:
 	CAN_RUN = true
 
 func _on_hurtbod_area_entered(area: Area2D) -> void:
-	print("Hurtbox area entered")
+	#print("Hurtbox area entered")
 	if area.get_parent().has_method("get_damage_amount"):
 		var node = area.get_parent() as Node
 		health_amount -= node.damage_amount
