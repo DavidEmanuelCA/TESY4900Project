@@ -552,4 +552,5 @@ sprite_node = NodePath("../AnimatedSprite2D")
 [node name="Death" parent="." instance=ExtResource("14_32hag")]
 sprite_node = NodePath("../AnimatedSprite2D")
 
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

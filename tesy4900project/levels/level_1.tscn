@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bvovge00gmaoj"]
+[gd_scene load_steps=21 format=3 uid="uid://bvovge00gmaoj"]
 
 [ext_resource type="PackedScene" uid="uid://d2lft6leq5ssr" path="res://levels/base_level.tscn" id="1_vn7o3"]
 [ext_resource type="PackedScene" uid="uid://gk6mt5femrdu" path="res://background/parallax_background.tscn" id="2_jirdo"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://qifnl3xwm5dw" path="res://enemies/wanderer/enemy_wanderer.tscn" id="7_gwceb"]
 [ext_resource type="PackedScene" uid="uid://ckoxe2tuxuagt" path="res://ui/game_screen.tscn" id="8_l53as"]
 [ext_resource type="PackedScene" uid="uid://clwdj75e0llav" path="res://levels/Door/door.tscn" id="9_3sk1a"]
+[ext_resource type="PackedScene" uid="uid://c4stwsga3a0cr" path="res://enemies/assassin/enemy_assassin.tscn" id="10_08mmt"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l53as"]
 texture = ExtResource("3_n46q3")
@@ -800,3 +801,6 @@ smoothing_distance = 1
 [node name="Door" parent="." index="8" instance=ExtResource("9_3sk1a")]
 position = Vector2(2608, -24)
 next_scene = "Level2"
+
+[node name="enemy_assassin" parent="." index="9" instance=ExtResource("10_08mmt")]
+position = Vector2(672, -48)
