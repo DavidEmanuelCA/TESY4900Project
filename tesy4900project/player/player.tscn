@@ -386,7 +386,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_8pxes")
 }],
 "loop": false,
-"name": &"falling",
+"name": &"fall",
 "speed": 5.0
 }, {
 "frames": [{
@@ -513,29 +513,26 @@ radius = 12.1364
 [sub_resource type="CircleShape2D" id="CircleShape2D_e7oew"]
 radius = 16.4085
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collider") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "state_manager") groups=["Player"]]
 collision_layer = 2
 platform_floor_layers = 4294901760
 script = ExtResource("1_g1dw6")
 sprite = NodePath("AnimatedSprite2D")
-collider = NodePath("CollisionShape2D")
+state_manager = NodePath("StateManager")
 max_speed = 225.0
-accel_time = 0.05
-decel_time = 0.05
-jump_height_px = 60.0
 time_to_peak = 0.35
-coyote_time = 0.25
-jump_buffer_time = 0.05
+jump_height_px = 60.0
 max_jumps = 2
 terminal_velocity = 675.0
+coyote_time = 0.25
+jump_buffer_time = 0.05
+accel_time = 0.05
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -18)
 sprite_frames = SubResource("SpriteFrames_tqiix")
-animation = &"attack3"
+animation = &"fall"
 autoplay = "idle"
-frame = 4
-frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
@@ -622,6 +619,3 @@ monitoring = false
 scale = Vector2(1.65, 1.65)
 shape = SubResource("CircleShape2D_e7oew")
 debug_color = Color(0.536384, 0.568861, 0, 0.42)
-
-[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
-[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]
