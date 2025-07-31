@@ -1,8 +1,16 @@
-[gd_scene load_steps=29 format=3 uid="uid://qifnl3xwm5dw"]
+[gd_scene load_steps=37 format=3 uid="uid://qifnl3xwm5dw"]
 
 [ext_resource type="Texture2D" uid="uid://djyrwfe5p1f8b" path="res://enemies/wanderer/IDLE.png" id="1_6gbwl"]
 [ext_resource type="Script" uid="uid://h2im7krmgytg" path="res://enemies/wanderer/enemy_wanderer.gd" id="1_kykxe"]
 [ext_resource type="Texture2D" uid="uid://bwtv3pqfpv8h2" path="res://enemies/wanderer/RUN.png" id="2_kykxe"]
+[ext_resource type="PackedScene" uid="uid://4kr1q5qgm6nt" path="res://states/state_manager.tscn" id="4_7du48"]
+[ext_resource type="PackedScene" uid="uid://34ym71n07dgg" path="res://states/idle/idle.tscn" id="5_7inv2"]
+[ext_resource type="PackedScene" uid="uid://b3a3lv7pfja5q" path="res://states/run/run.tscn" id="6_4np36"]
+[ext_resource type="PackedScene" uid="uid://ndlkqwxmrbpj" path="res://states/jump/jump.tscn" id="7_umgwx"]
+[ext_resource type="PackedScene" uid="uid://kdljg8p4e6r0" path="res://states/chase/chase.tscn" id="8_n82s0"]
+[ext_resource type="PackedScene" uid="uid://dr56uprp2bwl2" path="res://states/hurt/Hurt.tscn" id="9_ascd8"]
+[ext_resource type="PackedScene" uid="uid://d0xuvpbvybjwd" path="res://states/death/Death.tscn" id="10_hjld0"]
+[ext_resource type="PackedScene" uid="uid://bgc0612lb10id" path="res://states/melee_attack/melee_attack.tscn" id="11_76lde"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hgf8i"]
 atlas = ExtResource("1_6gbwl")
@@ -208,6 +216,30 @@ collision_mask = 2
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_kykxe")
 debug_color = Color(0.926922, 0.171883, 0.523505, 0.42)
+
+[node name="StateManager" parent="." instance=ExtResource("4_7du48")]
+initial_state_name = "Idle"
+
+[node name="Idle" parent="StateManager" instance=ExtResource("5_7inv2")]
+
+[node name="Run" parent="StateManager" instance=ExtResource("6_4np36")]
+stop_distance = 5.0
+
+[node name="Jump" parent="StateManager" instance=ExtResource("7_umgwx")]
+gravity = 700.0
+
+[node name="Chase" parent="StateManager" instance=ExtResource("8_n82s0")]
+attack_distance = 20.0
+
+[node name="Hurt" parent="StateManager" instance=ExtResource("9_ascd8")]
+invuln_duration = 0.25
+sprite_node = NodePath("../../AnimatedSprite2D")
+
+[node name="Death" parent="StateManager" instance=ExtResource("10_hjld0")]
+free_delay = 7.0
+sprite_node = NodePath("../../AnimatedSprite2D")
+
+[node name="MeleeAttack" parent="StateManager" instance=ExtResource("11_76lde")]
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbod_area_entered"]

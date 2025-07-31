@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ndlkqwxmrbpj"]
+
+[ext_resource type="Script" uid="uid://bihu32kuu4gd6" path="res://states/jump/jump.gd" id="1_xw73m"]
+
+[node name="Jump" type="Node"]
+script = ExtResource("1_xw73m")

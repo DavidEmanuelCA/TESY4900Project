@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcqwpsanroaqa"]
+
+[ext_resource type="Script" uid="uid://n4pnp0tfj78r" path="res://states/range_attack/range_attack.gd" id="1_nlcuy"]
+
+[node name="RangeAttack" type="Node"]
+script = ExtResource("1_nlcuy")
