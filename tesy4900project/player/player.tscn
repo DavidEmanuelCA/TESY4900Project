@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://lw1fq3w5gjv"]
+[gd_scene load_steps=84 format=3 uid="uid://lw1fq3w5gjv"]
 
 [ext_resource type="Script" uid="uid://drc1xlhrp3u2n" path="res://player/player.gd" id="1_g1dw6"]
 [ext_resource type="Texture2D" uid="uid://cu2sc8sgeupwt" path="res://player/IDLE.png" id="1_rkbax"]
@@ -12,8 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://chd5vpmey5hih" path="res://player/DEFEND.png" id="6_kb6p2"]
 [ext_resource type="Texture2D" uid="uid://bcdpfekoj8n4x" path="res://player/HURT.png" id="8_wodsf"]
 [ext_resource type="PackedScene" uid="uid://byhhm8ok0t3kk" path="res://data/health/health.tscn" id="12_kb6p2"]
+[ext_resource type="PackedScene" uid="uid://4kr1q5qgm6nt" path="res://states/state_manager.tscn" id="13_32hag"]
 [ext_resource type="PackedScene" uid="uid://dr56uprp2bwl2" path="res://states/hurt/Hurt.tscn" id="13_wodsf"]
 [ext_resource type="PackedScene" uid="uid://d0xuvpbvybjwd" path="res://states/death/Death.tscn" id="14_32hag"]
+[ext_resource type="PackedScene" uid="uid://34ym71n07dgg" path="res://states/idle/idle.tscn" id="14_tqiix"]
+[ext_resource type="PackedScene" uid="uid://bgc0612lb10id" path="res://states/melee_attack/melee_attack.tscn" id="16_tqiix"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uw77l"]
 atlas = ExtResource("3_2ieo8")
@@ -276,9 +279,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1s1yo")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack1",
-"speed": 10.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -296,9 +299,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pnw6m")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack2",
-"speed": 10.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -316,9 +319,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_art4l")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack3",
-"speed": 10.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -351,14 +354,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_s3g0c")
 }],
-"loop": true,
+"loop": false,
 "name": &"death",
 "speed": 8.0
-}, {
-"frames": [],
-"loop": true,
-"name": &"default",
-"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -379,7 +377,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_mmwog")
 }],
-"loop": true,
+"loop": false,
 "name": &"defend",
 "speed": 10.0
 }, {
@@ -404,7 +402,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jfgyi")
 }],
-"loop": true,
+"loop": false,
 "name": &"hurt",
 "speed": 8.0
 }, {
@@ -426,7 +424,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 6.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -469,7 +467,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 12.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -495,7 +493,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"throw",
-"speed": 20.0
+"speed": 18.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e7oew"]
@@ -504,6 +502,16 @@ height = 36.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qjkh3"]
 radius = 11.0
 height = 34.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tqiix"]
+radius = 9.46931
+height = 42.8446
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tqiix"]
+radius = 12.1364
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e7oew"]
+radius = 16.4085
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collider") groups=["Player"]]
 collision_layer = 2
@@ -524,8 +532,10 @@ terminal_velocity = 675.0
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -18)
 sprite_frames = SubResource("SpriteFrames_tqiix")
-animation = &"defend"
+animation = &"attack3"
 autoplay = "idle"
+frame = 4
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
@@ -545,12 +555,73 @@ debug_color = Color(0.801564, 0.37045, 0.521855, 0.42)
 
 [node name="Health" parent="." instance=ExtResource("12_kb6p2")]
 
-[node name="Hurt" parent="." instance=ExtResource("13_wodsf")]
-invuln_duration = 0.25
-sprite_node = NodePath("../AnimatedSprite2D")
+[node name="StateManager" parent="." instance=ExtResource("13_32hag")]
+initial_state_name = "Idle"
 
-[node name="Death" parent="." instance=ExtResource("14_32hag")]
-sprite_node = NodePath("../AnimatedSprite2D")
+[node name="Idle" parent="StateManager" instance=ExtResource("14_tqiix")]
+see_distance = 0.0
+next_state_name = ""
+
+[node name="Death" parent="StateManager" instance=ExtResource("14_32hag")]
+sprite_node = NodePath("../../AnimatedSprite2D")
+
+[node name="Hurt" parent="StateManager" instance=ExtResource("13_wodsf")]
+invuln_duration = 0.25
+sprite_node = NodePath("../../AnimatedSprite2D")
+
+[node name="MeleeAttack" parent="StateManager" instance=ExtResource("16_tqiix")]
+animation_name = "attack1"
+attack_duration = 0.2
+cooldown_time = 0.1
+
+[node name="AttackArea" type="Area2D" parent="StateManager/MeleeAttack"]
+visible = false
+position = Vector2(12, -22)
+rotation = -1.0472
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StateManager/MeleeAttack/AttackArea"]
+scale = Vector2(1.65, 1.65)
+shape = SubResource("CapsuleShape2D_tqiix")
+debug_color = Color(0.536384, 0.568861, 0, 0.42)
+
+[node name="MeleeAttack2" parent="StateManager" instance=ExtResource("16_tqiix")]
+animation_name = "attack2"
+attack_duration = 0.2
+cooldown_time = 0.1
+hitbox_node_name = "AttackArea2"
+
+[node name="AttackArea2" type="Area2D" parent="StateManager/MeleeAttack2"]
+visible = false
+position = Vector2(20, -20)
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StateManager/MeleeAttack2/AttackArea2"]
+scale = Vector2(1.65, 1.65)
+shape = SubResource("CircleShape2D_tqiix")
+debug_color = Color(0.536384, 0.568861, 0, 0.42)
+
+[node name="MeleeAttack3" parent="StateManager" instance=ExtResource("16_tqiix")]
+animation_name = "attack3"
+attack_duration = 0.2
+cooldown_time = 0.1
+hitbox_node_name = "AttackArea3"
+
+[node name="AttackArea3" type="Area2D" parent="StateManager/MeleeAttack3"]
+visible = false
+position = Vector2(8, -16)
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StateManager/MeleeAttack3/AttackArea3"]
+scale = Vector2(1.65, 1.65)
+shape = SubResource("CircleShape2D_e7oew")
+debug_color = Color(0.536384, 0.568861, 0, 0.42)
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

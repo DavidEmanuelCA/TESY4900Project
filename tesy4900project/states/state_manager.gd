@@ -1,5 +1,5 @@
 extends Node
-class_name StateMachine
+class_name StateManager
 
 @export var initial_state_name: String
 
@@ -25,7 +25,7 @@ func _change_state(new_name: String) -> void:
 		current_state.exit(get_parent())
 	current_state = states.get(new_name)
 	if not current_state:
-		push_error("State '%s' not found in StateMachine" % new_name)
+		push_error("State '%s' not found in StateManager" % new_name)
 		return
 	if current_state.has_method("enter"):
 		current_state.enter(get_parent())
