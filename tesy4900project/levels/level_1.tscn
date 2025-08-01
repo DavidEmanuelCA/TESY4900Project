@@ -777,7 +777,6 @@ layer_0/tile_data = PackedInt32Array(-262144, 393216, 0, -262143, 458752, 0, -26
 
 [node name="EnemyWanderer" parent="Enemies" index="0" instance=ExtResource("7_gwceb")]
 position = Vector2(1576, -208)
-damage_amount = 1
 
 [node name="PlayerCamera2D" parent="." index="6"]
 position = Vector2(0, 0)
