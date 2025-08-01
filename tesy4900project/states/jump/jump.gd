@@ -1,27 +1,44 @@
 extends Node
 class_name JumpState
 
-@export var jump_speed: Vector2 = Vector2(0, -300.0)
-@export var gravity: float = 800.0
-@export var land_state_name: String = "Idle"
+# Fired when you want to switch to another state
+signal finished(next_state:String)
 
-func _enter(owner_node: Node) -> void:
-	# Play jump animation if available
-	var anim = owner_node.get_node_or_null("AnimatedSprite2D")
+@export var jump_impulse_y: float = 500.0
+@export var jump_animation_name: String = "jump"
+@export var fall_state_name: String = "FallState"
+@export var sprite_path: NodePath = "AnimatedSprite2D"
+
+func enter(prev:String, data:Dictionary={}) -> void:
+	var owner = self.owner  # assumes the StateManager sets this property
+	if not owner:
+		push_error("JumpState.enter(): 'owner' not assigned")
+		return
+	var anim = owner.get_node_or_null(sprite_path)
 	if anim:
-		anim.play("jump")
-	# Set initial vertical velocity if owner has one
-	if owner_node.has_variable("velocity"):
-		owner_node.velocity = Vector2(owner_node.velocity.x, jump_speed.y)
-	owner_node.set_physics_process(true)
-
-func _physics_update(owner_node: Node, delta: float) -> void:
-	# Apply gravity manually if owner has velocity
-	if owner_node.has_variable("velocity"):
-		owner_node.velocity.y += gravity * delta
-		owner_node.move_and_slide()
-		# When vertical velocity becomes positive (descending) and is on floor — land
-		if owner_node.velocity.y > 0 and owner_node.is_on_floor():
-			emit_signal("finished", land_state_name)
+		anim.play(jump_animation_name)
 	else:
-		emit_signal("finished", land_state_name)
+		push_warning("JumpState: sprite not found at %s" % sprite_path)
+	if owner.has_variable("velocity"):
+		owner.velocity.y = -abs(jump_impulse_y)
+	else:
+		push_error("JumpState: owner has no 'velocity' var")
+
+func physics_update(delta:float) -> void:
+	var owner = self.owner
+	if not owner:
+		return
+	# Apply gravity if available
+	if owner.has_variable("velocity") and owner.has_variable("gravity"):
+		owner.velocity.y += owner.gravity * delta
+		owner.move_and_slide()
+		# Transition to fall once ascending stops
+		if owner.velocity.y >= 0:
+			emit_signal("finished", fall_state_name)
+	else:
+		push_error("JumpState: requires owner.velocity and owner.gravity")
+		emit_signal("finished", fall_state_name)
+
+func exit() -> void:
+	# No explicit cleanup needed here for most flows
+	pass

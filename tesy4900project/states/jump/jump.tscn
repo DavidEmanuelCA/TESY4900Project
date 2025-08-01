@@ -4,3 +4,4 @@
 
 [node name="Jump" type="Node"]
 script = ExtResource("1_xw73m")
+fall_state_name = "Fall"

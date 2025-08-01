@@ -1,33 +1,37 @@
 extends CharacterBody2D
 class_name Wanderer
 
-@export var wanderer_death_effect: PackedScene
-@export var health_amount: int = 3
 @export var damage_amount: int = 1
+@export var health_node_path: NodePath = "Health"
 
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var health = get_node_or_null(health_node_path)
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var state_manager: StateManager = $StateManager
 
 func _ready() -> void:
-	# Initialize the state machine and pass self if needed
-	if state_manager.has_method("set_owner"):
-		state_manager.set_owner(self)
-	# Optionally set initial sprite or animations if needed
+	if not state_manager:
+		push_error("Wanderer: StateManager node not found")
+		return
+	state_manager.set_owner(self)
+	if health:
+		if state_manager.has_method("set_health"):
+			state_manager.set_health(health)
+		health.health_changed.connect(Callable(self, "_on_health_changed"))
+	else:
+		push_error("Wanderer: Health node not found at: " + str(health_node_path))
+	state_manager._change_state("IdleState")
+	print("Wanderer starting HP:", health.current_health, "/", health.max_health)
 
 func _physics_process(delta: float) -> void:
-	# Always call state logic
 	state_manager._physics_process(delta)
 
 func damage(amount: int) -> void:
-	health_amount -= amount
-	if health_amount <= 0:
-		_on_death()
-	else:
+	if not health:
+		push_error("Wanderer.damage(): No Health component found")
+		return
+	health.damage(amount)
+	if health.current_health > 0:
 		state_manager._change_state("HurtState")
 
-func _on_death() -> void:
-	if wanderer_death_effect:
-		var effect = wanderer_death_effect.instantiate()
-		effect.global_position = global_position
-		get_parent().add_child(effect)
-	queue_free()
+func _on_health_changed(current: int, max_h: int) -> void:
+	print("Wanderer hit: now has", current, "/", max_h, "HP")

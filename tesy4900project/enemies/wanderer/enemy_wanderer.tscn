@@ -594,8 +594,6 @@ height = 52.0
 
 [node name="EnemyWanderer" type="CharacterBody2D" groups=["enemies"]]
 script = ExtResource("1_kykxe")
-health_amount = null
-damage_amount = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -33)
