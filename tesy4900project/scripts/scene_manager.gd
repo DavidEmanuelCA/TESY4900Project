@@ -7,22 +7,47 @@ extends Node
 }
 
 var _transition_overlay: PackedScene = preload("res://ui/screen_transition/scene_transition_screen.tscn")
+var _is_transitioning: bool = false
 
 func transition_to_scene(level_name: String) -> void:
-	var scene_path = scenes.get(level_name)
-	if scene_path == null:
+	if _is_transitioning:
+		return # Prevent multiple transitions at once
+	_is_transitioning = true
+	var scene_path: String = scenes.get(level_name, "")
+	if scene_path.is_empty():
 		push_error("SceneManager: Invalid level name '%s'" % level_name)
+		_is_transitioning = false
 		return
-	
-	var overlay = _transition_overlay.instantiate()
-	get_tree().get_root().add_child(overlay)
-	var fade_rect = overlay.get_node_or_null("ColorRect")
+	# Create overlay and fade in
+	var overlay := _transition_overlay.instantiate()
+	get_tree().root.add_child(overlay)
+	overlay.set_as_top_level(true)
+	var fade_rect: ColorRect = overlay.get_node_or_null("ColorRect")
 	if fade_rect:
-		fade_rect.modulate = Color(0, 0, 0, 1)  # fully opaque black
+		fade_rect.modulate = Color(0, 0, 0, 0) # Start transparent
+		# Fade to black
+		var tween := create_tween()
+		tween.tween_property(fade_rect, "modulate:a", 1.0, fade_duration)
 	else:
-		push_warning("Overlay: ColorRect node not found; skipping modulate")
-	
+		push_warning("SceneManager: ColorRect not found in transition overlay!")
 	await get_tree().create_timer(fade_duration).timeout
+	# Change scene
 	get_tree().change_scene_to_file(scene_path)
 	await get_tree().process_frame
+	# Fade back out
+	if fade_rect:
+		var tween := create_tween()
+		tween.tween_property(fade_rect, "modulate:a", 0.0, fade_duration)
+		await get_tree().create_timer(fade_duration).timeout
 	overlay.queue_free()
+	_is_transitioning = false
+
+func reload_current_scene() -> void:
+	# Reloads the active scene (e.g., after death or reset)
+	var current_scene = get_tree().current_scene
+	if current_scene:
+		transition_to_scene(current_scene.name)
+
+func start_game() -> void:
+	# Shortcut for starting the game (e.g., Level1 by default)
+	transition_to_scene("Level1")

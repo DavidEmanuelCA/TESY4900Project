@@ -1,12 +1,7 @@
-[gd_scene load_steps=24 format=3 uid="uid://c4stwsga3a0cr"]
+[gd_scene load_steps=19 format=3 uid="uid://c4stwsga3a0cr"]
 
 [ext_resource type="Texture2D" uid="uid://d3m38anry5b6h" path="res://enemies/assassin/IDLE.png" id="1_7v65y"]
 [ext_resource type="Texture2D" uid="uid://c0by4ghtr0oh1" path="res://enemies/assassin/RUN.png" id="2_bbvme"]
-[ext_resource type="Script" uid="uid://cjijd7bht7vws" path="res://enemies/assassin/gravity.gd" id="3_yisy8"]
-[ext_resource type="Script" uid="uid://c8ysthqko5c0m" path="res://enemies/assassin/state_machine_controller.gd" id="4_7rwtu"]
-[ext_resource type="Script" uid="uid://c2x7aehkjnvom" path="res://scripts/state_machine/node_finite_state_machine.gd" id="4_huakf"]
-[ext_resource type="Script" uid="uid://c5jhipuupwgkd" path="res://enemies/assassin/idle_state.gd" id="5_frifi"]
-[ext_resource type="Script" uid="uid://cokgmidkxlixh" path="res://enemies/assassin/run_state.gd" id="6_nyj43"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bbvme"]
 atlas = ExtResource("1_7v65y")
@@ -139,30 +134,15 @@ frame_progress = 0.206273
 position = Vector2(0, -17)
 shape = SubResource("CapsuleShape2D_bbvme")
 
-[node name="Gravity" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
-script = ExtResource("3_yisy8")
-character_body_2d = NodePath("..")
-animated_sprite_2d = NodePath("../AnimatedSprite2D")
+[node name="Gravity" type="Node" parent="."]
 
-[node name="StateMachineController" type="Node" parent="." node_paths=PackedStringArray("node_finite_state_machine")]
-script = ExtResource("4_7rwtu")
-node_finite_state_machine = NodePath("../StateMachine")
+[node name="StateMachineController" type="Node" parent="."]
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_node_state")]
-script = ExtResource("4_huakf")
-initial_node_state = NodePath("Idle")
+[node name="StateMachine" type="Node" parent="."]
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
-script = ExtResource("5_frifi")
-character_body_2d = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-slow_down_speed = 300
+[node name="Idle" type="Node" parent="StateMachine"]
 
-[node name="Run" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
-script = ExtResource("6_nyj43")
-character_body_2d = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-speed = 100
+[node name="Run" type="Node" parent="StateMachine"]
 
 [node name="AttackArea2D" type="Area2D" parent="."]
 collision_layer = 4

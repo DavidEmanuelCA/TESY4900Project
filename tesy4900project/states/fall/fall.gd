@@ -1,26 +1,35 @@
-# res://states/fall/FallState.gd
 extends Node
-class_name FallState
+class_name Fall
 
 signal finished(next_state: String)
 
 @export var fall_animation_name: String = "fall"
+@export var sprite_path: NodePath = "AnimatedSprite2D"
+@export var idle_state_name: String = "Idle"
 
-func enter(previous: String = "", data := {}) -> void:
-	# Immediately speed up exit from JumpState then fall
-	data.owner.sprite.play(fall_animation_name)
+func enter(owner: Node) -> void:
+	# Play fall animation when entering state
+	var anim = owner.get_node_or_null(sprite_path)
+	if anim:
+		anim.play(fall_animation_name)
+	else:
+		push_warning("Fall.enter(): sprite not found at %s" % sprite_path)
 
-func physics_update(owner, delta: float) -> void:
+func physics_update(owner: Node, delta: float) -> void:
+	# Transition to Idle if landed
 	if owner.is_on_floor():
-		emit_signal("finished", "IdleState")
+		finished.emit(idle_state_name)
 		return
+	# If still ascending, stay in fall state until downward motion begins
 	if owner.velocity.y < 0:
-		# Still moving upward from jump; postpone "fall"
 		return
-	# Apply gravity (owner exposes this property)
-	owner.velocity.y = min(owner.velocity.y + owner.gravity * delta, owner.terminal_velocity)
-	owner.move_and_slide()
+	# Apply gravity and cap at terminal velocity
+	if owner.has_variable("gravity") and owner.has_variable("terminal_velocity") and owner.has_variable("velocity"):
+		owner.velocity.y = min(owner.velocity.y + owner.gravity * delta, owner.terminal_velocity)
+		owner.move_and_slide()
+	else:
+		push_error("Fall.physics_update(): Owner missing 'velocity', 'gravity', or 'terminal_velocity'")
 
-func exit() -> void:
-	# No specific cleanup needed, but available if needed
+func exit(owner: Node) -> void:
+	# Optional cleanup when leaving fall state
 	pass

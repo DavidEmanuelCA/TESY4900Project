@@ -3,7 +3,7 @@ class_name PlatformerController2D
 
 @export_category("Nodes")
 @export var sprite: AnimatedSprite2D
-@export var state_manager: Node  # Your combat state manager node
+@export var state_manager: StateManager  # Your combat state manager node
 
 # Movement parameters
 @export_range(50.0, 600.0) var max_speed := 200.0
@@ -17,7 +17,6 @@ class_name PlatformerController2D
 @export_range(0.0, 0.5) var jump_buffer_time := 0.2
 @export_range(0.01, 3.0) var accel_time := 0.2
 
-
 # Internal state
 var jump_speed := 0.0
 var up_gravity := 0.0
@@ -29,39 +28,38 @@ var jump_count := 0
 var is_jumping := false
 var last_move_dir := 1
 
-@onready var health = $Health
+@onready var health: Health = $Health
 
 func _ready() -> void:
-	# Pre-calc movement gravity/jump speeds
+	# Precompute gravity and jump speeds
 	jump_speed = -2.0 * jump_height_px / time_to_peak
 	up_gravity = 2.0 * jump_height_px / (time_to_peak * time_to_peak)
 	down_gravity = 2.0 * jump_height_px / (time_to_fall * time_to_fall)
-	# Wire combat StateManager
-	if state_manager.has_method("set_owner"):
-		state_manager.set_owner(self)
-	if state_manager.has_method("set_health"):
-		state_manager.set_health(health)
-	state_manager._change_state("IdleState")
-	# Health signal routing for UI
+	# Initialize StateManager properly with new API
+	if state_manager:
+		state_manager.init_owner_and_health(self, health)
+		state_manager.switch_to("Idle") # Start in Idle
+	# Connect health signals
 	if health:
-		health.health_changed.connect(Callable(self, "_on_health_changed"))
-		health.died.connect(Callable(self, "_on_player_died"))
+		health.health_changed.connect(_on_health_changed)
+		health.died.connect(_on_player_died)
 	else:
 		push_error("Player: Health component not found")
 
 func _physics_process(delta: float) -> void:
+	# Run state manager updates (combat, hurt, defend, death)
 	state_manager._physics_process(delta)
-	var current = ""
-	if "current_state_name" in state_manager:
-		current = state_manager.current_state_name
-	if current in ["HurtState", "DeathState"]:
+	# Skip movement if in Hurt or Death states
+	if state_manager._current and state_manager._current.name in ["Hurt", "Death"]:
 		return
-	if current in ["HurtState", "DeathState"]:
-		return  # Skip movement when hurt or dead
+	# Handle player-controlled movement
 	handle_movement(delta)
+	# Hook: Emit "player_defended" if Defend state is active
+	if state_manager._current and state_manager._current.name == "Defend":
+		Signalbus.emit_signal("player_defended")
 
+# --- Movement Logic ---
 func handle_movement(delta: float) -> void:
-	# Movement separated to avoid clutter
 	process_gravity(delta)
 	process_horizontal(delta)
 	process_jumping(delta)
@@ -95,18 +93,13 @@ func process_jumping(delta: float) -> void:
 		jump_buffer_timer = max(jump_buffer_timer - delta, 0.0)
 	var elapsed = (Time.get_ticks_msec() - last_time_on_floor) / 1000.0
 	var can_coyote = elapsed <= coyote_time
+	# Jump logic
 	if jump_buffer_timer > 0.0 and (can_coyote or jump_count < max_jumps):
 		velocity.y = jump_speed
 		jump_count += 1
 		jump_buffer_timer = 0.0
 		is_jumping = true
-	if variable_jump and Input.is_action_just_released("jump") and velocity.y < 0.0:
-		velocity.y *= 0.5
-	if jump_buffer_timer > 0.0 and (can_coyote or jump_count < max_jumps):
-		velocity.y = jump_speed
-		jump_count += 1
-		jump_buffer_timer = 0.0
-		is_jumping = true
+	# Variable jump cut
 	if variable_jump and Input.is_action_just_released("jump") and velocity.y < 0.0:
 		velocity.y *= 0.5
 
@@ -118,19 +111,17 @@ func process_animation() -> void:
 		else:
 			sprite.play("idle")
 	else:
-		if velocity.y < 0:
-			sprite.play("jump")
-		else:
-			sprite.play("fall")
+		sprite.play("jump" if velocity.y < 0 else "fall")
 	sprite.flip_h = last_move_dir < 0
 
+# --- Combat and Health Integration ---
 func damage(amount: int) -> void:
 	health.damage(amount)
-	state_manager._change_state("HurtState")
+	state_manager.switch_to("Hurt")
 
 func _on_health_changed(current: int, max_health: int) -> void:
 	Signalbus.emit_signal("player_health_changed", current, max_health)
 
 func _on_player_died() -> void:
 	set_physics_process(false)
-	state_manager._change_state("DeathState")
+	state_manager.switch_to("Death")

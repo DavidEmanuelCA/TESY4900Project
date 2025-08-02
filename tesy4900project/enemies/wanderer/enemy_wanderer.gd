@@ -1,45 +1,54 @@
-# Wanderer.gd
 extends CharacterBody2D
 class_name Wanderer
 
 @export var attack_damage: int = 1
 @export var health_node_path: NodePath = "Health"
+@export var state_manager_path: NodePath = "StateManager"
+@export var enemy_ai_path: NodePath = "EnemyAI"
 
 @onready var health: Health = get_node_or_null(health_node_path)
+@onready var state_manager: StateManager = get_node_or_null(state_manager_path)
+@onready var enemy_ai: EnemyAI = get_node_or_null(enemy_ai_path)
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var state_manager: StateManager = $StateManager
 
 func _ready() -> void:
-	if not state_manager:
-		push_error("Wanderer: StateManager node not found")
-		return
-	state_manager.set_owner(self)
-	if health:
-		if state_manager.has_method("set_health"):
-			state_manager.set_health(health)
-		health.health_changed.connect(Callable(self, "_on_health_changed"))
-		health.died.connect(Callable(self, "_on_self_died"))
-	else:
+	# Validate and initialize health + state manager
+	if not health:
 		push_error("Wanderer: Health node not found at path: " + str(health_node_path))
-	# ensure first draw shows full HP in debug
+		return
+	if not state_manager:
+		push_error("Wanderer: StateManager node not found at path: " + str(state_manager_path))
+		return
+	# Initialize state manager with owner and health
+	state_manager.init_owner_and_health(self, health)
+	state_manager.switch_to("Idle")
+	# Connect health signals
+	health.health_changed.connect(_on_health_changed)
+	health.died.connect(_on_self_died)
+	# Debugging output (can be removed later)
 	print("Wanderer starting HP:", health.current_health, "/", health.max_health)
-	state_manager._change_state("IdleState")
 
 func _physics_process(delta: float) -> void:
+	# Update AI behavior and states
+	if enemy_ai:
+		enemy_ai._physics_process(delta)
 	state_manager._physics_process(delta)
 
+# --- Combat ---
 func damage(amount: int) -> void:
-	# if something else bypasses the Hitbox logic
-	health.damage(amount)
+	if health:
+		health.damage(amount)
 
+func on_attack_hit(body: Node) -> void:
+	# Called from Wanderer's melee/ranged hitbox Area2D
+	if body.has_method("damage"):
+		body.damage(attack_damage)
+
+# --- Health Callbacks ---
 func _on_health_changed(current: int, max_hp: int) -> void:
 	print("Wanderer hit: now has", current, "/", max_hp, "HP")
 
 func _on_self_died() -> void:
-	state_manager.set_physics_enabled(false)
-	state_manager._change_state("DeathState")
-
-# Called by the hitbox scene when its `body_entered(body)` signal fires
-func on_attack_hit(body: Node) -> void:
-	if body.has_method("damage"):
-		body.damage(attack_damage)
+	# Switch to death state and disable physics/movement
+	set_physics_process(false)
+	state_manager.switch_to("Death")

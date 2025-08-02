@@ -1,37 +1,32 @@
 extends Node
-class_name IdleState
+class_name Idle
 
-signal finished(next_state:String)
+signal finished(next_state: String)
 
-@export var idle_animation_name:String = "idle"
-@export var sprite_path:NodePath = "AnimatedSprite2D"
+@export var idle_animation_name: String = "idle"
+@export var sprite_path: NodePath = "AnimatedSprite2D"
 
-func enter(prev_state:String = "", data:Dictionary = {}) -> void:
+func enter(owner: Node) -> void:
 	# Play idle animation on entering the state
-	var owner = self.owner
-	if not owner:
-		push_error("IdleState.enter(): owner not set")
-		return
 	var anim = owner.get_node_or_null(sprite_path)
 	if anim:
 		anim.play(idle_animation_name)
 	else:
-		push_warning("IdleState.enter(): sprite not found at " + str(sprite_path))
+		push_warning("Idle.enter(): sprite not found at " + str(sprite_path))
 
-func physics_update(delta:float) -> void:
-	var owner = self.owner
-	if not owner:
+func physics_update(owner: Node, delta: float) -> void:
+	# Ensure owner is valid and has velocity
+	if not owner or not owner.has_variable("velocity"):
 		return
-	# Only apply this animation if the entity is grounded and not moving
+	# If entity is on floor and not moving, stay idle
 	if owner.is_on_floor():
-		if owner.has_variable("velocity") and owner.velocity.x != 0:
-			# If velocity begins, a RunState (or similar) should handle it,
-			# not this state
-			return
+		if abs(owner.velocity.x) > 0.01:
+			# Transition to RunState (or similar) if horizontal movement starts
+			finished.emit("RunState")
 	else:
-		# If in the air, you should fall — not chase or run
-		emit_signal("finished", "FallState")
+		# If off the ground, switch to FallState
+		finished.emit("FallState")
 
-func exit() -> void:
-	# Optional: cleanup when leaving state
+func exit(owner: Node) -> void:
+	# Optional cleanup when leaving state
 	pass
