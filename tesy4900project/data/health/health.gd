@@ -10,6 +10,7 @@ var is_invulnerable: bool = false
 
 signal health_changed(current: int, max: int)
 signal died()
+signal health_initialized(current: int, max_health: int)
 
 var _regen_timer: float = 0.0
 var _invuln_timer: float = 0.0
@@ -17,6 +18,9 @@ var _invuln_timer: float = 0.0
 func _ready() -> void:
 	reset()
 	set_process(heal_per_sec > 0 or invulnerability_time > 0)
+	emit_signal("health_initialized", current_health, max_health)
+	if heal_per_sec > 0:
+		set_process(true)
 
 # --- Core Health Management ---
 func reset() -> void:

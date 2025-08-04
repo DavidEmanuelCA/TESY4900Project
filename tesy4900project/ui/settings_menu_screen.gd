@@ -7,8 +7,10 @@ var window_modes : Dictionary = {"Fullscreen" : DisplayServer.WINDOW_MODE_EXCLUS
 								"Window" : DisplayServer.WINDOW_MODE_WINDOWED,
 								"Window Maximized" : DisplayServer.WINDOW_MODE_MAXIMIZED }
 
-var resolutions : Dictionary = { "854x480" : Vector2i(854, 480),
-								"1280x720" : Vector2i(1280, 720) }
+var resolutions : Dictionary = { "1280x720" : Vector2i(1280, 720),
+								"1920x1080" : Vector2i(1920, 1080),
+								"2560x1440" : Vector2i(2560, 1440),
+								"3840x2160" : Vector2i(3840, 2160), }
 
 func _ready() -> void:
 	for window_mode in window_modes:

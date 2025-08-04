@@ -12,6 +12,11 @@ var current_max: int = 0
 
 func _ready() -> void:
 	Signalbus.connect("player_health_changed", _on_health_changed)
+	await get_tree().process_frame  # <-- Wait 1 frame for Player to finish loading
+	var player = get_tree().get_first_node_in_group("Player")
+	if player and player.has_node("Health"):
+		var health = player.get_node("Health")
+		_on_health_changed(health.current_health, health.max_health)
 
 func _on_health_changed(current: int, max_health: int) -> void:
 	# If max health changed, regenerate heart sprites

@@ -27,24 +27,6 @@ layout_mode = 2
 
 [node name="HealthBar" parent="MarginContainer/VBoxContainer/Control" instance=ExtResource("1_g4tl3")]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(16, 0)
-layout_mode = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
-centered = false
-hframes = 8
-
-[node name="CollectibleLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme_override_font_sizes/font_size = 12
-text = "0"
-
 [node name="PauseTextureButton" type="TextureButton" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 8

@@ -8,18 +8,3 @@
 script = ExtResource("1_5p4ly")
 full_heart = ExtResource("2_inmie")
 empty_heart = ExtResource("3_inmie")
-
-[node name="Heart1" type="Sprite2D" parent="."]
-position = Vector2(14, 12)
-texture = ExtResource("2_inmie")
-region_rect = Rect2(224, 48, 48, 48)
-
-[node name="Heart2" type="Sprite2D" parent="."]
-position = Vector2(36, 12)
-texture = ExtResource("2_inmie")
-region_rect = Rect2(224, 48, 48, 48)
-
-[node name="Heart3" type="Sprite2D" parent="."]
-position = Vector2(58, 12)
-texture = ExtResource("2_inmie")
-region_rect = Rect2(224, 48, 48, 48)
