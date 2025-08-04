@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckoxe2tuxuagt"]
+[gd_scene load_steps=4 format=3 uid="uid://ckoxe2tuxuagt"]
 
 [ext_resource type="PackedScene" uid="uid://cb5muoekfxme4" path="res://ui/healthbar/health_bar.tscn" id="1_g4tl3"]
 [ext_resource type="Script" uid="uid://xwmt4o6wg5ju" path="res://ui/game_screen.gd" id="1_vb34k"]
-[ext_resource type="Texture2D" uid="uid://b58beatwrx3yv" path="res://collectibles/blue_gem/Items_BlueGem.png" id="2_sp4y4"]
 [ext_resource type="Texture2D" uid="uid://bk6ggy54wmwbn" path="res://ui/icons8-pause-24.png" id="4_bethk"]
 
 [node name="GameScreen" type="CanvasLayer"]
@@ -36,7 +35,6 @@ custom_minimum_size = Vector2(16, 0)
 layout_mode = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
-texture = ExtResource("2_sp4y4")
 centered = false
 hframes = 8
 

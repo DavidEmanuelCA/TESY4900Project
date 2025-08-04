@@ -21,11 +21,9 @@ func transition_to_scene(level_name: String) -> void:
 	# Create overlay and fade in
 	var overlay := _transition_overlay.instantiate()
 	get_tree().root.add_child(overlay)
-	overlay.set_as_top_level(true)
 	var fade_rect: ColorRect = overlay.get_node_or_null("ColorRect")
 	if fade_rect:
 		fade_rect.modulate = Color(0, 0, 0, 0) # Start transparent
-		# Fade to black
 		var tween := create_tween()
 		tween.tween_property(fade_rect, "modulate:a", 1.0, fade_duration)
 	else:
@@ -41,6 +39,7 @@ func transition_to_scene(level_name: String) -> void:
 		await get_tree().create_timer(fade_duration).timeout
 	overlay.queue_free()
 	_is_transitioning = false
+
 
 func reload_current_scene() -> void:
 	# Reloads the active scene (e.g., after death or reset)

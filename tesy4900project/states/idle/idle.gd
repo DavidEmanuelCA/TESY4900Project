@@ -15,18 +15,19 @@ func enter(owner: Node) -> void:
 		push_warning("Idle.enter(): sprite not found at " + str(sprite_path))
 
 func physics_update(owner: Node, delta: float) -> void:
-	# Ensure owner is valid and has velocity
-	if not owner or not owner.has_variable("velocity"):
+	if not owner:
 		return
-	# If entity is on floor and not moving, stay idle
+	# Apply gravity continuously
+	if owner is CharacterBody2D:
+		owner.velocity.y = min(owner.velocity.y + owner.gravity * delta, owner.terminal_velocity)
+		owner.move_and_slide()
+	# State transitions
 	if owner.is_on_floor():
 		if abs(owner.velocity.x) > 0.01:
-			# Transition to RunState (or similar) if horizontal movement starts
-			finished.emit("RunState")
+			finished.emit("Run")
 	else:
-		# If off the ground, switch to FallState
-		finished.emit("FallState")
+		finished.emit("Fall")
+
 
 func exit(owner: Node) -> void:
-	# Optional cleanup when leaving state
 	pass

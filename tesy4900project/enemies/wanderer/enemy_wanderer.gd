@@ -21,7 +21,6 @@ func _ready() -> void:
 		return
 	# Initialize state manager with owner and health
 	state_manager.init_owner_and_health(self, health)
-	state_manager.switch_to("Idle")
 	# Connect health signals
 	health.health_changed.connect(_on_health_changed)
 	health.died.connect(_on_self_died)

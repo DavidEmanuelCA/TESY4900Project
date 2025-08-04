@@ -4,3 +4,8 @@
 
 [node name="EnemyAi" type="Node"]
 script = ExtResource("1_72rt6")
+detection_range = 250.0
+attack_range = 25.0
+normal_attacks = Array[String](["MeleeAttackLight1", "MeleeAttackLight2", "MeleeAttackLight3"])
+heavy_attack = "MeleeAttackHeavy1"
+combo_delay = 0.15

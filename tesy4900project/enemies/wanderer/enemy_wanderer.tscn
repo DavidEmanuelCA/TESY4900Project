@@ -598,6 +598,7 @@ height = 52.0
 [node name="EnemyWanderer" type="CharacterBody2D" groups=["enemies"]]
 script = ExtResource("1_kykxe")
 attack_damage = 0
+enemy_ai_path = NodePath("EnemyAi")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -33)
@@ -621,6 +622,8 @@ shape = SubResource("CapsuleShape2D_kykxe")
 debug_color = Color(0.926922, 0.171883, 0.523505, 0.42)
 
 [node name="EnemyAi" parent="." instance=ExtResource("12_mxibu")]
+detection_range = 300.0
+attack_range = 30.0
 
 [node name="Health" parent="." instance=ExtResource("12_c64oh")]
 max_health = 10
@@ -629,30 +632,34 @@ max_health = 10
 initial_state_name = "Idle"
 
 [node name="Idle" parent="StateManager" instance=ExtResource("5_7inv2")]
-sprite_path = NodePath("../../AnimatedSprite2D")
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="Run" parent="StateManager" instance=ExtResource("6_4np36")]
-stop_distance = 1.0
+stop_distance = 0.5
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="Jump" parent="StateManager" instance=ExtResource("7_umgwx")]
 jump_impulse_y = 300.0
-sprite_path = NodePath("../../AnimatedSprite2D")
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="Fall" parent="StateManager" instance=ExtResource("18_psfoq")]
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="Chase" parent="StateManager" instance=ExtResource("8_n82s0")]
 chase_speed = 100.0
-sprite_path = NodePath("../../AnimatedSprite2D")
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="Hurt" parent="StateManager" instance=ExtResource("9_ascd8")]
 invuln_duration = 0.25
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="Death" parent="StateManager" instance=ExtResource("10_hjld0")]
-free_delay = 5.0
+free_delay = 3.0
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="MeleeAttackLight1" parent="StateManager" instance=ExtResource("11_76lde")]
 animation_name = "attack1"
-sprite_path = NodePath("../../AnimatedSprite2D")
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="AttackArea" type="Area2D" parent="StateManager/MeleeAttackLight1"]
 visible = false
@@ -668,7 +675,8 @@ debug_color = Color(0.536384, 0.568861, 0, 0.42)
 
 [node name="MeleeAttackLight2" parent="StateManager" instance=ExtResource("11_76lde")]
 animation_name = "attack2"
-sprite_path = NodePath("../../AnimatedSprite2D")
+hitbox_node_path = NodePath("AttackArea2")
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="AttackArea2" type="Area2D" parent="StateManager/MeleeAttackLight2"]
 visible = false
@@ -683,7 +691,8 @@ debug_color = Color(0.536384, 0.568861, 0, 0.42)
 
 [node name="MeleeAttackLight3" parent="StateManager" instance=ExtResource("11_76lde")]
 animation_name = "attack3"
-sprite_path = NodePath("../../AnimatedSprite2D")
+hitbox_node_path = NodePath("AttackArea3")
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="AttackArea3" type="Area2D" parent="StateManager/MeleeAttackLight3"]
 visible = false
@@ -699,7 +708,8 @@ debug_color = Color(0.536384, 0.568861, 0, 0.42)
 [node name="MeleeAttackHeavy1" parent="StateManager" instance=ExtResource("11_76lde")]
 animation_name = "slam"
 damage_amount = 2
-sprite_path = NodePath("../../AnimatedSprite2D")
+hitbox_node_path = NodePath("AttackArea4")
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [node name="AttackArea4" type="Area2D" parent="StateManager/MeleeAttackHeavy1"]
 visible = false
@@ -713,6 +723,6 @@ shape = SubResource("CapsuleShape2D_nnje7")
 debug_color = Color(0.536384, 0.568861, 0, 0.42)
 
 [node name="Defend" parent="StateManager" instance=ExtResource("22_s3vnf")]
-sprite_path = NodePath("../../AnimatedSprite2D")
+sprite_path = NodePath("../AnimatedSprite2D")
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbod_area_entered"]

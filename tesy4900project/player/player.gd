@@ -35,10 +35,9 @@ func _ready() -> void:
 	jump_speed = -2.0 * jump_height_px / time_to_peak
 	up_gravity = 2.0 * jump_height_px / (time_to_peak * time_to_peak)
 	down_gravity = 2.0 * jump_height_px / (time_to_fall * time_to_fall)
-	# Initialize StateManager properly with new API
+	# Initialize StateManager: inject owner and health, switch state AFTER injection
 	if state_manager:
-		state_manager.init_owner_and_health(self, health)
-		state_manager.switch_to("Idle") # Start in Idle
+		state_manager.init_owner_and_health(self, health) 
 	# Connect health signals
 	if health:
 		health.health_changed.connect(_on_health_changed)
@@ -125,3 +124,8 @@ func _on_health_changed(current: int, max_health: int) -> void:
 func _on_player_died() -> void:
 	set_physics_process(false)
 	state_manager.switch_to("Death")
+
+func _on_hurtbox_body_entered(body: Node2D) -> void:
+	# Check if the colliding body is an enemy attack hitbox
+	if body.has_meta("is_attack_hitbox"):
+		health.damage(body.get("damage") if body.has("damage") else 1)

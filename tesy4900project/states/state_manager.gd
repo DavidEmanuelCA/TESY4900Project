@@ -17,9 +17,6 @@ func _ready() -> void:
 			# Connect state's finished signal if it has one
 			if child.has_signal("finished"):
 				child.finished.connect(_on_state_finished)
-	# Start in the initial state if provided
-	if initial_state_name != "":
-		switch_to(initial_state_name)
 
 func _physics_process(delta: float) -> void:
 	if _current and "physics_update" in _current:
@@ -28,6 +25,9 @@ func _physics_process(delta: float) -> void:
 func init_owner_and_health(owner_node: Node, health_node: Node) -> void:
 	owner_ref = owner_node
 	injected_health = health_node
+	# Switch to initial state AFTER owner/health are injected
+	if initial_state_name != "":
+		switch_to(initial_state_name)
 
 func switch_to(state_name: String) -> void:
 	var next_state: Node = _states.get(state_name, null)
@@ -39,7 +39,6 @@ func switch_to(state_name: String) -> void:
 		_current.exit(owner_ref)
 	# Switch to new state
 	_current = next_state
-	
 	# Enter new state
 	if "enter" in _current:
 		_current.enter(owner_ref)

@@ -12,8 +12,17 @@ signal finished(next_state: String)
 var _anim: AnimatedSprite2D
 var _conn_anim_ref: Callable
 var _conn_hitbox_ref: Callable
+var hitbox: Area2D
 
 func enter(owner: Node) -> void:
+	# Resolve hitbox dynamically and tag it here
+	hitbox = $AttackArea
+	if hitbox:
+		hitbox.set_meta("is_attack_hitbox", true)
+		hitbox.set("damage", damage_amount)
+		hitbox.monitoring = true
+		if not hitbox.body_entered.is_connected(_on_hitbox_body_entered):
+			hitbox.body_entered.connect(_on_hitbox_body_entered)
 	# Ensure owner is a CharacterBody2D (required for floor check)
 	if not (owner is CharacterBody2D):
 		push_error("MeleeAttack.enter(): Owner is not a CharacterBody2D")
@@ -30,26 +39,18 @@ func enter(owner: Node) -> void:
 		if not _anim.animation_finished.is_connected(_conn_anim_ref):
 			_anim.animation_finished.connect(_conn_anim_ref)
 		_anim.play(animation_name)
-		_activate_hitbox(owner)
 	else:
 		push_error("MeleeAttack.enter(): AnimatedSprite2D not found at %s" % sprite_path)
 		_finish_immediately(owner)
 
 func physics_update(owner: Node, delta: float) -> void:
-	# Typically no movement updates during melee attack; leave empty unless needed
 	pass
 
 func exit(owner: Node) -> void:
+	if hitbox and hitbox.body_entered.is_connected(_on_hitbox_body_entered):
+		hitbox.body_entered.disconnect(_on_hitbox_body_entered)
+	hitbox.monitoring = false
 	_cleanup(owner)
-
-# --- Internal Helpers ---
-func _activate_hitbox(owner: Node) -> void:
-	var hb = owner.get_node_or_null(hitbox_node_path)
-	if hb and hb is Area2D:
-		hb.monitoring = true
-		_conn_hitbox_ref = Callable(self, "_on_hitbox_body_entered")
-		if not hb.body_entered.is_connected(_conn_hitbox_ref):
-			hb.body_entered.connect(_conn_hitbox_ref)
 
 func _on_hitbox_body_entered(body: Node) -> void:
 	if body.has_method("damage"):
