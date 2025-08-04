@@ -1,4 +1,4 @@
-[gd_scene load_steps=101 format=3 uid="uid://qifnl3xwm5dw"]
+[gd_scene load_steps=90 format=3 uid="uid://qifnl3xwm5dw"]
 
 [ext_resource type="Texture2D" uid="uid://djyrwfe5p1f8b" path="res://enemies/wanderer/IDLE.png" id="1_6gbwl"]
 [ext_resource type="Script" uid="uid://h2im7krmgytg" path="res://enemies/wanderer/enemy_wanderer.gd" id="1_kykxe"]
@@ -6,23 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://bwtv3pqfpv8h2" path="res://enemies/wanderer/RUN.png" id="2_kykxe"]
 [ext_resource type="Texture2D" uid="uid://d3q60omlumftq" path="res://enemies/wanderer/JUMP.png" id="3_7inv2"]
 [ext_resource type="Texture2D" uid="uid://bwj1qfhi8vgkk" path="res://enemies/wanderer/ATTACK 2.png" id="3_hjld0"]
-[ext_resource type="PackedScene" uid="uid://4kr1q5qgm6nt" path="res://states/state_manager.tscn" id="4_7du48"]
-[ext_resource type="PackedScene" uid="uid://34ym71n07dgg" path="res://states/idle/idle.tscn" id="5_7inv2"]
 [ext_resource type="Texture2D" uid="uid://cwq6tqihwjgdo" path="res://enemies/wanderer/DEATH.png" id="5_umgwx"]
-[ext_resource type="PackedScene" uid="uid://b3a3lv7pfja5q" path="res://states/run/run.tscn" id="6_4np36"]
 [ext_resource type="Texture2D" uid="uid://dc21uv4sauwy" path="res://enemies/wanderer/HURT.png" id="6_n82s0"]
 [ext_resource type="Texture2D" uid="uid://cf37n03et50y2" path="res://enemies/wanderer/ATTACK 1.png" id="7_ascd8"]
-[ext_resource type="PackedScene" uid="uid://ndlkqwxmrbpj" path="res://states/jump/jump.tscn" id="7_umgwx"]
-[ext_resource type="PackedScene" uid="uid://kdljg8p4e6r0" path="res://states/chase/chase.tscn" id="8_n82s0"]
 [ext_resource type="Texture2D" uid="uid://b58v8t87jj84o" path="res://enemies/wanderer/ATTACK 3.png" id="9_76lde"]
-[ext_resource type="PackedScene" uid="uid://dr56uprp2bwl2" path="res://states/hurt/Hurt.tscn" id="9_ascd8"]
-[ext_resource type="PackedScene" uid="uid://d0xuvpbvybjwd" path="res://states/death/Death.tscn" id="10_hjld0"]
-[ext_resource type="PackedScene" uid="uid://bgc0612lb10id" path="res://states/melee_attack/melee_attack.tscn" id="11_76lde"]
 [ext_resource type="Texture2D" uid="uid://00rb00y5ih25" path="res://enemies/wanderer/STRONG ATTACK.png" id="11_nnje7"]
 [ext_resource type="PackedScene" uid="uid://byhhm8ok0t3kk" path="res://data/health/health.tscn" id="12_c64oh"]
-[ext_resource type="PackedScene" uid="uid://rq6qt7qi2xby" path="res://data/enemy/enemy_ai.tscn" id="12_mxibu"]
-[ext_resource type="PackedScene" uid="uid://xc8ww3q2tl45" path="res://states/fall/fall.tscn" id="18_psfoq"]
-[ext_resource type="PackedScene" uid="uid://ce0gqaerp487t" path="res://states/defend/defend.tscn" id="22_s3vnf"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dukke"]
 atlas = ExtResource("7_ascd8")
@@ -597,8 +586,18 @@ height = 52.0
 
 [node name="EnemyWanderer" type="CharacterBody2D" groups=["enemies"]]
 script = ExtResource("1_kykxe")
-attack_damage = 0
-enemy_ai_path = NodePath("EnemyAi")
+speed = 90.0
+gravity = 700.0
+terminal_velocity = 400.0
+detection_range = 300.0
+attack_range = 20.0
+light_attacks = Array[String](["attack1", "attack2", "attack3"])
+heavy_attack_anim = "slam"
+combo_delay = 0.2
+attack_hitbox_light1 = NodePath("AttackArea")
+attack_hitbox_light2 = NodePath("AttackArea2")
+attack_hitbox_light3 = NodePath("AttackArea3")
+attack_hitbox_heavy = NodePath("AttackArea4")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -33)
@@ -621,108 +620,60 @@ position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_kykxe")
 debug_color = Color(0.926922, 0.171883, 0.523505, 0.42)
 
-[node name="EnemyAi" parent="." instance=ExtResource("12_mxibu")]
-detection_range = 300.0
-attack_range = 30.0
-
 [node name="Health" parent="." instance=ExtResource("12_c64oh")]
 max_health = 10
 
-[node name="StateManager" parent="." instance=ExtResource("4_7du48")]
-initial_state_name = "Idle"
-
-[node name="Idle" parent="StateManager" instance=ExtResource("5_7inv2")]
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="Run" parent="StateManager" instance=ExtResource("6_4np36")]
-stop_distance = 0.5
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="Jump" parent="StateManager" instance=ExtResource("7_umgwx")]
-jump_impulse_y = 300.0
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="Fall" parent="StateManager" instance=ExtResource("18_psfoq")]
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="Chase" parent="StateManager" instance=ExtResource("8_n82s0")]
-chase_speed = 100.0
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="Hurt" parent="StateManager" instance=ExtResource("9_ascd8")]
-invuln_duration = 0.25
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="Death" parent="StateManager" instance=ExtResource("10_hjld0")]
-free_delay = 3.0
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="MeleeAttackLight1" parent="StateManager" instance=ExtResource("11_76lde")]
-animation_name = "attack1"
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="AttackArea" type="Area2D" parent="StateManager/MeleeAttackLight1"]
+[node name="AttackArea" type="Area2D" parent="."]
 visible = false
 position = Vector2(17, -23)
 collision_layer = 4
 collision_mask = 2
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StateManager/MeleeAttackLight1/AttackArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 scale = Vector2(1.65, 1.65)
 shape = SubResource("CircleShape2D_nnje7")
 debug_color = Color(0.536384, 0.568861, 0, 0.42)
 
-[node name="MeleeAttackLight2" parent="StateManager" instance=ExtResource("11_76lde")]
-animation_name = "attack2"
-hitbox_node_path = NodePath("AttackArea2")
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="AttackArea2" type="Area2D" parent="StateManager/MeleeAttackLight2"]
+[node name="AttackArea2" type="Area2D" parent="."]
 visible = false
 position = Vector2(12, -18)
 collision_layer = 4
 collision_mask = 2
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StateManager/MeleeAttackLight2/AttackArea2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea2"]
 shape = SubResource("CircleShape2D_c64oh")
 debug_color = Color(0.536384, 0.568861, 0, 0.42)
 
-[node name="MeleeAttackLight3" parent="StateManager" instance=ExtResource("11_76lde")]
-animation_name = "attack3"
-hitbox_node_path = NodePath("AttackArea3")
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="AttackArea3" type="Area2D" parent="StateManager/MeleeAttackLight3"]
+[node name="AttackArea3" type="Area2D" parent="."]
 visible = false
 position = Vector2(15, -23)
 collision_layer = 4
 collision_mask = 2
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StateManager/MeleeAttackLight3/AttackArea3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea3"]
 shape = SubResource("CircleShape2D_c64oh")
 debug_color = Color(0.536384, 0.568861, 0, 0.42)
 
-[node name="MeleeAttackHeavy1" parent="StateManager" instance=ExtResource("11_76lde")]
-animation_name = "slam"
-damage_amount = 2
-hitbox_node_path = NodePath("AttackArea4")
-sprite_path = NodePath("../AnimatedSprite2D")
-
-[node name="AttackArea4" type="Area2D" parent="StateManager/MeleeAttackHeavy1"]
+[node name="AttackArea4" type="Area2D" parent="."]
 visible = false
 position = Vector2(27, -26)
 collision_layer = 4
 collision_mask = 2
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StateManager/MeleeAttackHeavy1/AttackArea4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea4"]
 shape = SubResource("CapsuleShape2D_nnje7")
 debug_color = Color(0.536384, 0.568861, 0, 0.42)
 
-[node name="Defend" parent="StateManager" instance=ExtResource("22_s3vnf")]
-sprite_path = NodePath("../AnimatedSprite2D")
+[node name="PatrolPoints" type="Node2D" parent="."]
 
-[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbod_area_entered"]
+[node name="Point1" type="Node2D" parent="PatrolPoints"]
+position = Vector2(-100, 0)
+
+[node name="Point2" type="Node2D" parent="PatrolPoints"]
+position = Vector2(100, 0)
+
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]
