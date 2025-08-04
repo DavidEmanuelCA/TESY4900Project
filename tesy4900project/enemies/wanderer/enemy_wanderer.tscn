@@ -584,7 +584,7 @@ radius = 23.0
 radius = 14.0
 height = 52.0
 
-[node name="EnemyWanderer" type="CharacterBody2D" groups=["enemies"]]
+[node name="EnemyWanderer" type="CharacterBody2D" node_paths=PackedStringArray("sprite") groups=["enemies"]]
 script = ExtResource("1_kykxe")
 speed = 90.0
 gravity = 700.0
@@ -598,6 +598,9 @@ attack_hitbox_light1 = NodePath("AttackArea")
 attack_hitbox_light2 = NodePath("AttackArea2")
 attack_hitbox_light3 = NodePath("AttackArea3")
 attack_hitbox_heavy = NodePath("AttackArea4")
+patrol_points = Array[NodePath]([NodePath("PatrolPoints/Point1"), NodePath("PatrolPoints/Point2")])
+patrol_pause = 3.0
+sprite = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -33)
