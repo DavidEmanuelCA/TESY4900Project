@@ -420,7 +420,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"defend",
-"speed": 8.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -437,7 +437,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"hurt",
-"speed": 8.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -599,15 +599,15 @@ attack_hitbox_light2 = NodePath("AttackArea2")
 attack_hitbox_light3 = NodePath("AttackArea3")
 attack_hitbox_heavy = NodePath("AttackArea4")
 patrol_points = Array[NodePath]([NodePath("PatrolPoints/Point1"), NodePath("PatrolPoints/Point2")])
-patrol_pause = 3.0
+patrol_pause = 5.0
 sprite = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -33)
 sprite_frames = SubResource("SpriteFrames_7p7c5")
-animation = &"slam"
+animation = &"hurt"
 autoplay = "idle"
-frame = 10
+frame = 3
 frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
