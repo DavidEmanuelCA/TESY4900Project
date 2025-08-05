@@ -15,12 +15,9 @@ var resolutions : Dictionary = { "1280x720" : Vector2i(1280, 720),
 func _ready() -> void:
 	for window_mode in window_modes:
 		window_mode_option_button.add_item(window_mode)
-	
 	for resolution in resolutions:
 		resolution_option_button.add_item(resolution)
-	
 	initialise_controls()
-	
 	get_viewport().size_changed.connect(_on_viewport_resize)
 	_on_viewport_resize()
 
