@@ -598,7 +598,7 @@ attack_hitbox_light1 = NodePath("AttackArea")
 attack_hitbox_light2 = NodePath("AttackArea2")
 attack_hitbox_light3 = NodePath("AttackArea3")
 attack_hitbox_heavy = NodePath("AttackArea4")
-patrol_points = Array[NodePath]([NodePath("PatrolPoints/Point1"), NodePath("PatrolPoints/Point2")])
+patrol_points = Array[NodePath]([NodePath("PatrolPoints/Marker2D1"), NodePath("PatrolPoints/Marker2D2")])
 patrol_pause = 5.0
 sprite = NodePath("AnimatedSprite2D")
 
@@ -673,10 +673,10 @@ debug_color = Color(0.536384, 0.568861, 0, 0.42)
 
 [node name="PatrolPoints" type="Node2D" parent="."]
 
-[node name="Point1" type="Node2D" parent="PatrolPoints"]
-position = Vector2(-100, 0)
+[node name="Marker2D1" type="Marker2D" parent="PatrolPoints"]
+position = Vector2(100, -20)
 
-[node name="Point2" type="Node2D" parent="PatrolPoints"]
-position = Vector2(100, 0)
+[node name="Marker2D2" type="Marker2D" parent="PatrolPoints"]
+position = Vector2(-100, -20)
 
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]
