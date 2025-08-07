@@ -9,6 +9,8 @@ This project is for TESY4900 and it is a 2D game created using Godot 4.4.1 stabl
 
 <img width="3440" height="1440" alt="Screenshot_06-Aug_15-01-18_18759" src="https://github.com/user-attachments/assets/f0a2f325-3684-4f23-99cb-56faa1edc07b" />
 
+The game has bugs and is still in development.
+
 ## Credits/Resources
 - **Mattz Art** (Pixel Art and Tilemap): [Visit Mattz Art](https://xzany.itch.io/)
 - **Humble Pixel** (Health UI): [Visit Humble Pixel](https://humblepixel.itch.io/)
